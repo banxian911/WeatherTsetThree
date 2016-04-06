@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">testThree</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_welcome">Welcome</string>
+    <string name="title_activity_first_add_city">FirstAddCity</string>
+
+    <string name="enter_city_name">请输入城市名称(例如：北京)</string>
+	 <string name="net_error">您的网络不给力哦！</string>
+	 <string name="getlocation_fail">获取位置信息失败！</string>
+	 <string name="getlocation_success">定位成功</string>
+	 <string name="share_fail">分享失败！</string>
+    <string name="please_wait">请稍后...</string>
+    <string name="share_to">您想分享到？</string>
+
+</resources>

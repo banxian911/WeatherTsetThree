@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/weather_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_addcity"
+    android:orientation="vertical"
+    tools:context=".Weather" >
+
+    <include 
+        android:id="@+id/main_title"
+        layout="@layout/main_title"/>
+    
+        <TextView
+            android:id="@+id/update_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/white"
+            android:textSize="12sp" />
+  
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout 
+            android:id="@+id/weather_view"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            <include
+            android:id="@+id/nowweather"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            layout="@layout/weather_now"
+            />
+         	<include 
+         	    android:id="@+id/forecast_list"
+         	    android:layout_width="match_parent"
+         	    android:layout_height="wrap_content"
+         	    android:layout_below="@+id/nowweather"
+         	    layout="@layout/weather_forecast_listview"/>
+         	<include 
+         	    android:id="@+id/aqi_view"
+         	    android:layout_width="match_parent"
+         	    android:layout_height="wrap_content"
+         	    layout="@layout/weather_aqi"/>
+       		<include 
+       		   android:id="@+id/suggestion_view"
+       		    android:layout_width="match_parent"
+       		    android:layout_height="wrap_content"
+       		    layout="@layout/weather_index"/>
+            
+        </LinearLayout>
+        
+    </ScrollView>
+
+</LinearLayout>

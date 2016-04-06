@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+     <TextView
+        android:id="@+id/null_one"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentTop="true"
+        />
+    <TextView
+        android:id="@+id/current_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/null_one"
+        android:textSize="60sp"
+        android:hint="温度" />
+
+    <TextView
+        android:id="@+id/current_weather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/current_temperature"
+        android:layout_toRightOf="@+id/current_temperature"
+        android:text="阵雨"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/current_temperature"
+        android:orientation="vertical" >
+		
+        <TextView
+        android:id="@+id/people_temperature"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="体感温度：11"
+        android:textSize="20sp" />
+        <TextView
+        android:id="@+id/wind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="风力"
+        android:textSize="20sp" />
+        <TextView
+        android:id="@+id/humidity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="湿度：91%"
+        android:textSize="20sp" />
+    </LinearLayout>
+
+</RelativeLayout>
