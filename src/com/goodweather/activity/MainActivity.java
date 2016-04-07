@@ -112,7 +112,8 @@ public class MainActivity extends Activity {
 	private ViewPager mViewPager;
 	private ListView weatherForecastList;
 	private ListView weatherSuggestionList;
-	private ProgressDialog dialog;
+//	private ProgressDialog dialog;
+	private Dialog mdialog;
 	/**
 	 * 初始化AqiView
 	 */
@@ -121,6 +122,8 @@ public class MainActivity extends Activity {
 	private TextView Pm25;
 	private TextView Pm10;
 	private TextView So2;
+	
+	
 
 	/**
 	 * 定位
@@ -136,7 +139,8 @@ public class MainActivity extends Activity {
 			// mLocationTV.setText(formatBigMessage(city));
 			saveCityname(city);
 			initdata();
-			dialog.dismiss();
+			//dialog.dismiss();
+			mdialog.dismiss();
 			Toast.makeText(MainActivity.this,R.string.getlocation_success, Toast.LENGTH_SHORT).show();
 		}
 
@@ -199,15 +203,7 @@ public class MainActivity extends Activity {
 		
 	}
 
-	private void initdata() {
-		if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
-			Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
-			// return;
-		} else {
-			mThread = new Thread(mRunnable);
-			mThread.start();
-		}
-	}
+	
 
 	private void initView() {
 		// 新界面初始化
@@ -218,7 +214,7 @@ public class MainActivity extends Activity {
 		about = (ImageView) findViewById(R.id.about);
 		refresh = (ImageView) findViewById(R.id.refresh);
 		location = (ImageView) findViewById(R.id.location);
-		refreshing = (ProgressBar) findViewById(R.id.refreshing);
+		
 		updateTimeText = (TextView) findViewById(R.id.update_time);
 		scrollView = (ScrollView) findViewById(R.id.scroll_view);
 		scrollView.smoothScrollTo(0, 10);
@@ -260,12 +256,12 @@ public class MainActivity extends Activity {
 				AboutInfo();
 				break;
 			case R.id.refresh:// 更新按钮
-				dialogShow("正在更新，请等待！");
+				dialogShow(2);
 				initdata();
-				dialog.dismiss();
+				mdialog.dismiss();
 				break;
 			case R.id.location:
-				dialogShow("正在定位，请等待！");
+				dialogShow(1);
 				startLocation(mCityNameStatus);
 				break;
 			default:
@@ -317,7 +313,19 @@ public class MainActivity extends Activity {
 		weatherSuggestionList.setAdapter(new WeatherSuggestionListAdapter(this));
 	}
 
+	private void initdata() {
+		if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
+			Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
+			// return;
+		} else {
+			mThread = new Thread(mRunnable);
+			mThread.start();
+		}
+	}
+	
+	
 	private Handler mHandler = new Handler() {
+		
 		@Override
 		public void handleMessage(Message msg) {
 			// TODO Auto-generated method stub
@@ -326,7 +334,6 @@ public class MainActivity extends Activity {
 			case MSG_SUCCESS:
 				initWeatherdate();
 				initViewData();
-				//dialog.dismiss();
 				break;
 			case MSG_FAILURE:
 				break;
@@ -338,14 +345,12 @@ public class MainActivity extends Activity {
 	};
 
 	Runnable mRunnable = new Runnable() {
-
 		@Override
 		public void run() {
 			// TODO Auto-generated method stub
 			try {
 				String info = HttpUntil.DownloadUrl(initCityName());
 				saveDownloadInfo(info);
-				//dialogShow("正在更新");
 				mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -353,12 +358,21 @@ public class MainActivity extends Activity {
 		}
 	};
 	
-	private void dialogShow(String info){
-		dialog = new ProgressDialog(MainActivity.this);
+	private void dialogShow(int tag){
+	/*	dialog = new ProgressDialog(MainActivity.this);
 		dialog.setMessage(info);
 		dialog.setCanceledOnTouchOutside(false);
-		dialog.show();
-		
+		dialog.show();*/
+		mdialog = DialogUtil.getCustomeDialog(MainActivity.this, 
+				R.style.load_dialog, R.layout.custom_progress_dialog);
+		TextView titleTxtv = (TextView) mdialog
+				.findViewById(R.id.dialogText);
+		if (tag == 1) {
+			titleTxtv.setText(R.string.getlocation_wait);
+		} else if (tag == 2) {
+			titleTxtv.setText(R.string.please_wait);
+		}
+		mdialog.show();
 	}
 
 	/**
