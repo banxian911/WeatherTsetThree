@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.testthree"
+    package="com.goodweather.activity"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -9,13 +9,13 @@
         android:targetSdkVersion="22" />
 
     <application
-        android:name=".MyApplication"
+        android:name="com.goodweather.activity.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".Welcome"
+            android:name="com.goodweather.activity.Welcome"
             android:label="@string/title_activity_welcome" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,15 +24,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.goodweather.activity.MainActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
-            android:name=".UpdateCityName"
+            android:name="com.goodweather.activity.UpdateCityName"
             android:label="@string/title_activity_first_add_city" >
         </activity>
         <activity
-            android:name=".KaKaLauncherActivity"
+            android:name="com.goodweather.activity.KaKaLauncherActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
