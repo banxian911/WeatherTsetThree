@@ -221,7 +221,7 @@ public class MainActivity extends Activity {
 		refreshing = (ProgressBar) findViewById(R.id.refreshing);
 		updateTimeText = (TextView) findViewById(R.id.update_time);
 		scrollView = (ScrollView) findViewById(R.id.scroll_view);
-
+		scrollView.smoothScrollTo(0, 10);
 		// weatherIcon = (ImageView) findViewById(R.id.weather_icon);
 		currentTemperatureText = (TextView) findViewById(R.id.current_temperature);
 		currentWeatherText = (TextView) findViewById(R.id.current_weather);
@@ -232,7 +232,9 @@ public class MainActivity extends Activity {
 
 		weatherForecastList = (ListView) findViewById(R.id.weather_forecast_list);
 		initAqiView();
+		weatherForecastList.setFocusable(false);
 		weatherSuggestionList = (ListView) findViewById(R.id.weather_suggestion_list);
+		weatherSuggestionList.setFocusable(false);
 		changeCity.setOnClickListener(new ButtonListener());
 		share.setOnClickListener(new ButtonListener());
 		about.setOnClickListener(new ButtonListener());
