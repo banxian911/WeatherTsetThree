@@ -6,7 +6,7 @@
      <TextView
         android:id="@+id/null_one"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="300dp"
         android:layout_alignParentTop="true"
         />
     <TextView
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/current_temperature"
         android:layout_toRightOf="@+id/current_temperature"
-        android:text="阵雨"
+        android:hint="阵雨"
         android:textSize="25sp" />
 
     <LinearLayout
@@ -38,7 +38,7 @@
         android:id="@+id/people_temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="体感温度：11"
+        android:hint="体感温度：11"
         android:textSize="20sp" />
         <TextView
         android:id="@+id/wind"
@@ -50,7 +50,7 @@
         android:id="@+id/humidity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="湿度：91%"
+        android:hint="湿度：91%"
         android:textSize="20sp" />
     </LinearLayout>
 
