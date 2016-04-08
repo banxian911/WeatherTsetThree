@@ -10,8 +10,6 @@ import android.util.AttributeSet;
 
 /**
  * 重写ViewPager  主要做一个切换背景的功能
- * @author ansen
- * @create time 2015-08-07
  */
 public class GuideViewPager extends ViewPager {
 	private Bitmap bg;

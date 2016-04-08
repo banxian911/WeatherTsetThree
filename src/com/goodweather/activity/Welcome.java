@@ -25,7 +25,7 @@ public class Welcome extends Activity {
 			@Override
 			public void run() { // TODO Auto-generated method stub
 				if (isFirstUse()) {
-					Intent mIntent = new Intent(Welcome.this, KaKaLauncherActivity.class);
+					Intent mIntent = new Intent(Welcome.this, GuideLauncherActivity.class);
 					startActivity(mIntent);
 					finish();
 				} else {
@@ -33,7 +33,6 @@ public class Welcome extends Activity {
 					startActivity(mIntent);
 					finish();
 				}
-
 			}
 		};
 		Handler mHandler = new Handler();

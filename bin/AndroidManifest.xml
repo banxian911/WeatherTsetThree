@@ -32,7 +32,7 @@
             android:label="@string/title_activity_update_city" >
         </activity>
         <activity
-            android:name="com.goodweather.activity.KaKaLauncherActivity"
+            android:name="com.goodweather.activity.GuideLauncherActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>

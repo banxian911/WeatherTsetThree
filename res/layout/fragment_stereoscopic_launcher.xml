@@ -6,13 +6,14 @@
 
     <ImageView
         android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="350dip"
         android:layout_gravity="right"
         android:paddingLeft="0dp"
+        android:paddingRight="0dp"
         android:paddingTop="22dp"
         android:scaleType="centerInside"
-        android:src="@drawable/launcher_the_world_is_so_big_not_to_see" />
+        android:src="@drawable/launcher_the_to_see" />
 
     <ImageView
         android:layout_marginTop="40dp"

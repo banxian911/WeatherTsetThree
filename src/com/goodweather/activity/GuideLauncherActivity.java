@@ -23,10 +23,8 @@ import com.goodweather.util.GuideViewPager;
 
 /**
  * 主Activity
- * @author ansen
- * @create time 2015-08-07
  */
-public class KaKaLauncherActivity extends FragmentActivity {
+public class GuideLauncherActivity extends FragmentActivity {
 	private GuideViewPager vPager;
 	private List<LauncherBaseFragment> list = new ArrayList<LauncherBaseFragment>();
 	private BaseFragmentAdapter adapter;
@@ -39,7 +37,7 @@ public class KaKaLauncherActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_luancher_main);
 		
-		//初始化点点点控件
+		//初始化控件
 		ViewGroup group = (ViewGroup)findViewById(R.id.viewGroup);
 		tips = new ImageView[3];
 		for (int i = 0; i < tips.length; i++) {
@@ -53,14 +51,14 @@ public class KaKaLauncherActivity extends FragmentActivity {
 			tips[i]=imageView;
 
 			LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT,LayoutParams.WRAP_CONTENT));
-			layoutParams.leftMargin = 20;//设置点点点view的左边距
-			layoutParams.rightMargin = 20;//设置点点点view的右边距
+			layoutParams.leftMargin = 20;//设置view的左边距
+			layoutParams.rightMargin = 20;//设置view的右边距
 			group.addView(imageView,layoutParams);
 		}
 		
 		//获取自定义viewpager 然后设置背景图片
 		vPager = (GuideViewPager) findViewById(R.id.viewpager_launcher);
-		vPager.setBackGroud(BitmapFactory.decodeResource(getResources(),R.drawable.bg_kaka_launcher));
+		vPager.setBackGroud(BitmapFactory.decodeResource(getResources(),R.drawable.bg_guide));
 
 		/**
 		 * 初始化三个fragment  并且添加到list中

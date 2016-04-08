@@ -16,11 +16,10 @@ import android.widget.ImageView;
 
 
 /**
- * 私信
- * @author ansen
+ * 天气预报
  */
 public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
-	private ImageView ivLikeVideo,ivThinkReward,ivThisWeek,ivWatchMovie;
+	private ImageView ivWeatherGood,ivTomorrow,ivWeatherLook,ivHowKnow;
 	
 	private Animation likeAnimation,thinkAnimation,watchAnimation,thisWeekAnimation;
 	
@@ -30,10 +29,10 @@ public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 		View rooView=inflater.inflate(R.layout.fragment_private_message_launcher, null);
 		
-		ivLikeVideo=(ImageView) rooView.findViewById(R.id.iv_private_message_like_video);
-		ivThinkReward=(ImageView) rooView.findViewById(R.id.iv_private_message_think_reward);
-		ivWatchMovie=(ImageView) rooView.findViewById(R.id.iv_private_message_watch_movie);
-		ivThisWeek=(ImageView) rooView.findViewById(R.id.private_message_this_week);
+		ivWeatherGood=(ImageView) rooView.findViewById(R.id.iv_private_message_weather_good);
+		ivTomorrow=(ImageView) rooView.findViewById(R.id.iv_private_message_weather_tomorrow);
+		ivHowKnow=(ImageView) rooView.findViewById(R.id.iv_private_message_weather_howknow);
+		ivWeatherLook=(ImageView) rooView.findViewById(R.id.private_message_weather_look);
 		return rooView;
 	}
 	
@@ -43,10 +42,10 @@ public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
 		/**
 		 * 清空所有控件上的动画
 		 */
-		ivLikeVideo.clearAnimation();
-		ivThinkReward.clearAnimation();
-		ivWatchMovie.clearAnimation();
-		ivThisWeek.clearAnimation();
+		ivWeatherGood.clearAnimation();
+		ivTomorrow.clearAnimation();
+		ivHowKnow.clearAnimation();
+		ivWeatherLook.clearAnimation();
 	}
 	
 	
@@ -56,10 +55,10 @@ public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
 		/**
 		 * 每次开启动画前先隐藏控件
 		 */
-		ivLikeVideo.setVisibility(View.GONE);
-		ivThinkReward.setVisibility(View.GONE);
-		ivWatchMovie.setVisibility(View.GONE);
-		ivThisWeek.setVisibility(View.GONE);
+		ivWeatherGood.setVisibility(View.GONE);
+		ivTomorrow.setVisibility(View.GONE);
+		ivHowKnow.setVisibility(View.GONE);
+		ivWeatherLook.setVisibility(View.GONE);
 		
 		new Handler().postDelayed(new Runnable() {//延时0.5秒之后开启喜欢视频动画
 			@Override
@@ -71,13 +70,13 @@ public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
 	}
 	
 	/**
-	 * 好喜欢你的视频
+	 * 今天天气不错
 	 */
 	private void likeVideoAnimation(){
-		ivLikeVideo.setVisibility(View.VISIBLE);
+		ivWeatherGood.setVisibility(View.VISIBLE);
 		
 		likeAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.private_message_launcher);
-		ivLikeVideo.startAnimation(likeAnimation);//开启动画
+		ivWeatherGood.startAnimation(likeAnimation);//开启动画
 		likeAnimation.setAnimationListener(new AnimationListener(){  
             @Override  
             public void onAnimationStart(Animation animation) {}  
@@ -92,12 +91,12 @@ public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
 	}
 	
 	/**
-	 * 谢谢你的打赏
+	 *明天天气更好
 	 */
 	private void thinkReward(){
-		ivThinkReward.setVisibility(View.VISIBLE);
+		ivTomorrow.setVisibility(View.VISIBLE);
 		thinkAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.private_message_launcher);
-		ivThinkReward.startAnimation(thinkAnimation);
+		ivTomorrow.startAnimation(thinkAnimation);
 		thinkAnimation.setAnimationListener(new AnimationListener(){  
             @Override  
             public void onAnimationStart(Animation animation) {}  
@@ -112,12 +111,12 @@ public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
 	}
 	
 	/**
-	 * 一起看个电影呗
+	 * 你是怎么知道的
 	 */
 	private void watchMovie(){
-		ivWatchMovie.setVisibility(View.VISIBLE);
+		ivHowKnow.setVisibility(View.VISIBLE);
 		watchAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.private_message_launcher);
-		ivWatchMovie.startAnimation(watchAnimation);
+		ivHowKnow.startAnimation(watchAnimation);
 		watchAnimation.setAnimationListener(new AnimationListener(){  
             @Override  
             public void onAnimationStart(Animation animation) {}  
@@ -132,11 +131,11 @@ public class PrivateMessageLauncherFragment extends LauncherBaseFragment{
 	}
 	
 	/**
-	 * 好啊  这周末有空
+	 * 看goodweather
 	 */
 	private void thisWeek(){
-		ivThisWeek.setVisibility(View.VISIBLE);
+		ivWeatherLook.setVisibility(View.VISIBLE);
 		thisWeekAnimation = AnimationUtils.loadAnimation(getActivity(),R.anim.private_message_launcher);  
-		ivThisWeek.startAnimation(thisWeekAnimation);
+		ivWeatherLook.startAnimation(thisWeekAnimation);
 	}
 }

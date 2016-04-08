@@ -14,45 +14,46 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
-            android:src="@drawable/icon_private_message_launcher" />
+            android:paddingRight="30dp"
+            android:src="@drawable/icon_message_launcher" />
     </RelativeLayout>
 
     <ImageView
-        android:id="@+id/iv_private_message_like_video"
+        android:id="@+id/iv_private_message_weather_good"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="35dp"
         android:layout_marginTop="60dp"
-        android:src="@drawable/icon_private_message_like_video"
+        android:src="@drawable/icon_message_weather_good"
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/iv_private_message_think_reward"
+        android:id="@+id/iv_private_message_weather_tomorrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="30dp"
         android:layout_marginTop="90dp"
-        android:src="@drawable/icon_private_message_think_reward"
+        android:src="@drawable/icon_message_weather_tomorrow"
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/iv_private_message_watch_movie"
+        android:id="@+id/iv_private_message_weather_howknow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="35dp"
         android:layout_marginTop="215dp"
-        android:src="@drawable/icon_private_message_watch_movie" 
+        android:src="@drawable/icon_message_weather_howknow" 
         android:visibility="gone"/>
 
     <ImageView
-        android:id="@+id/private_message_this_week"
+        android:id="@+id/private_message_weather_look"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="38dp"
         android:layout_marginTop="240dp"
-        android:src="@drawable/icon_private_message_this_week" 
+        android:src="@drawable/icon_message_weather_look" 
         android:visibility="gone"/>
 
     <TextView
@@ -61,9 +62,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/tv_watch_video_dating"
         android:layout_centerHorizontal="true"
-        android:text="私信功能"
+        android:text="天气预报功能"
         android:textColor="#FFFFFFFF"
-        android:textSize="54dp"/>
+        android:textSize="30dp"/>
 
     <TextView
         android:id="@+id/tv_watch_video_dating"
@@ -73,7 +74,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="65dp"
-        android:text="开心看视频   快乐交朋友"
+        android:text="准确预报，放心出行。"
         android:textColor="#FFFFFFFF"
         android:textSize="27dp"/>
 

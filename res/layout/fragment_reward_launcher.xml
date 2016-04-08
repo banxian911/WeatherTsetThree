@@ -14,43 +14,21 @@
 
     <RelativeLayout
         android:id="@+id/rl_receive_apicture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="65dp" >
 
         <ImageView
-            android:id="@+id/iv_receive_apicture1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/icon_receive_apicture" />
-
-        <ImageView
-            android:id="@+id/iv_gold"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="32dp"
-            android:paddingRight="30dp"
-            android:paddingLeft="30dp"
-            android:src="@drawable/icon_gold" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingRight="17dp"
-            android:paddingLeft="17dp"
-            android:src="@drawable/icon_finger" />
-
-        <ImageView
             android:id="@+id/iv_reward"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/icon_reward"
-            android:visibility="gone" />
+            android:layout_marginTop="22dp"
+            android:src="@drawable/ic_sun" 
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <TextView
@@ -59,9 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/tv_shooting_video_money"
-        android:text="打赏功能"
+        android:text="实况天气"
         android:textColor="#FFFFFFFF"
-        android:textSize="54dp" />
+        android:textSize="30dp" />
 
     <TextView
         android:id="@+id/tv_shooting_video_money"
@@ -71,8 +49,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="60dp"
-        android:text="拍视频    赚赏钱"
+        android:text="实时天气状况，每30-60分钟更新一次"
         android:textColor="#FFFFFFFF"
-        android:textSize="37dp"/>
+        android:textSize="20dp"/>
 
 </RelativeLayout>
