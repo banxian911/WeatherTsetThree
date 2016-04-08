@@ -186,6 +186,8 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 			showButton.setVisibility(View.GONE);
 		}
 		private void doSavaEditCityname(){
-			
+			String cityname = mQueryCityET.getText().toString();
+			saveCityname(cityname);
+			finish();
 		}
 }

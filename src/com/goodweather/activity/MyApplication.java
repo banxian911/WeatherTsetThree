@@ -16,6 +16,7 @@ public class MyApplication extends Application {
 	private static final String WEATHERINFO = "WeatherInfo";//shareadPerference 全局key
 	private static final String ONE = "First";//判断软件是否第一次使用的key
 	private static final String CITYNAME = "CityName";//获取城市名称
+	private static final String LOCATIONCITYNAME = "LocationCityName";
 	
 	//数据保存路径
 	private static final String FilePath = "/data/data/com.goodweather.activity/files/WeatherInfo.txt";
@@ -65,6 +66,10 @@ public class MyApplication extends Application {
 
 	public static String getUrl() {
 		return Url;
+	}
+
+	public static String getLocationcityname() {
+		return LOCATIONCITYNAME;
 	}
 	
 }

@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			Log.d(TAG, "city--->" + city);
 			// mLocationTV.setText(formatBigMessage(city));
-			saveCityname(city);
+			saveLocationCityname(city);
 			initdata();
 			//dialog.dismiss();
 			mdialog.dismiss();
@@ -165,10 +165,10 @@ public class MainActivity extends Activity {
 			mLocationUtils.startLocation();// 开始定位
 		}
 	}
-	private void saveCityname(String cityname){
+	private void saveLocationCityname(String cityname){
 		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
 		Editor mEditor = mPreferences.edit();
-		mEditor.putString(MyApplication.getCityname(), cityname);
+		mEditor.putString(MyApplication.getLocationcityname(),cityname);
 		mEditor.commit();
 	}
 
@@ -285,15 +285,20 @@ public class MainActivity extends Activity {
 
 	private void initWeatherdate() {
 		mHeWeatherBean = WeatherInfoData.initHeWeatherData();
-		cityname = mHeWeatherBean.getBasic().getCity().toString();
-		updateTime = mHeWeatherBean.getBasic().getUpdate().getLoc().toString();
-		currentTemperature = mHeWeatherBean.getNow().getTmp().toString() + "°";
-		currentWeather = mHeWeatherBean.getNow().getCond().getTxt().toString();
-		peopletemperature = mHeWeatherBean.getNow().getFl().toString() + "°";
-		windDir = mHeWeatherBean.getNow().getWind().getDir().toString();
-		windSc = mHeWeatherBean.getNow().getWind().getSc().toString();
-		hum = mHeWeatherBean.getNow().getHum().toString();
-		initAqiData();
+		if (mHeWeatherBean != null) {
+			cityname = mHeWeatherBean.getBasic().getCity().toString();
+			updateTime = mHeWeatherBean.getBasic().getUpdate().getLoc().toString();
+			currentTemperature = mHeWeatherBean.getNow().getTmp().toString() + "°";
+			currentWeather = mHeWeatherBean.getNow().getCond().getTxt().toString();
+			peopletemperature = mHeWeatherBean.getNow().getFl().toString() + "°";
+			windDir = mHeWeatherBean.getNow().getWind().getDir().toString();
+			windSc = mHeWeatherBean.getNow().getWind().getSc().toString();
+			hum = mHeWeatherBean.getNow().getHum().toString();
+			initAqiData();
+		} else {
+			Toast.makeText(MainActivity.this, "获取数据失败，请稍后重试！", Toast.LENGTH_LONG);
+		}
+		
 
 	}
 
@@ -566,11 +571,16 @@ public class MainActivity extends Activity {
 	}
 
 	public void saveDownloadInfo(String weatherinfo) throws Exception {
-		String filename = MyApplication.getFilename();
-		FileOutputStream outputStream = null;
-		outputStream = openFileOutput(filename, MODE_PRIVATE);
-		outputStream.write(weatherinfo.getBytes());
-		outputStream.close();
+		if (weatherinfo != null) {
+			String filename = MyApplication.getFilename();
+			FileOutputStream outputStream = null;
+			outputStream = openFileOutput(filename, MODE_PRIVATE);
+			outputStream.write(weatherinfo.getBytes());
+			outputStream.close();
+		} else {
+			
+		}
+		
 	}
 	
 	private void share(){

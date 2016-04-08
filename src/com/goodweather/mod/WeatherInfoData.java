@@ -30,6 +30,7 @@ public class WeatherInfoData {
 			}
 		} else {
 		//	Toast.makeText(, "info null", Toast.LENGTH_SHORT).show();
+			return null;
 		}
 		
 		//TextView myTextView = (TextView) findViewById(R.id.text1);

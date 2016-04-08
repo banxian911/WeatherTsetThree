@@ -11,6 +11,7 @@ import javax.net.ssl.HttpsURLConnection;
 import com.goodweather.activity.MyApplication;
 
 import android.util.Log;
+import android.widget.Toast;
 
 public class HttpUntil {
 
@@ -33,7 +34,8 @@ public class HttpUntil {
 		if (code == 200) {
 			stream = connection.getInputStream();
 		} else {
-
+			//Toast.makeText(get, "", )
+			return null;
 		}
 		mBufferedReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 
