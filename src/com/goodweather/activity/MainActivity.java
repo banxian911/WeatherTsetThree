@@ -83,7 +83,6 @@ public class MainActivity extends Activity {
 	 * 切换城市和刷新按钮
 	 */
 	private Button switchCity;
-	private Button refreshWeather;
 	private Builder builder;
 
 	public Intent intent;
@@ -98,18 +97,16 @@ public class MainActivity extends Activity {
 	private ImageView about;
 	private ImageView refresh;
 	private ImageView location;
-	private ProgressBar refreshing;
+	
 	private TextView updateTimeText;
 	private ScrollView scrollView;
-	private LinearLayout currentWeatherLayout;
+	
 	private ImageView weatherIcon;
 	private TextView currentTemperatureText;
 	private TextView currentWeatherText;
 	private TextView peopletemperatureText;
 	private TextView windText;
 	private TextView humText;
-	private TextView dateText;
-	private ViewPager mViewPager;
 	private ListView weatherForecastList;
 	private ListView weatherSuggestionList;
 //	private ProgressDialog dialog;
