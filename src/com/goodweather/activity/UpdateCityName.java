@@ -23,6 +23,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 	private ImageView mBackBtn;
 	private TextView mLocationTV;
 	private EditText mQueryCityET;
+	private LinearLayout showButton;
 	private Button mButtonSure;
 	private Button mButtonCanal;
 	
@@ -50,9 +52,14 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 		mBackBtn = (ImageView) findViewById(R.id.back_image);
 		mLocationTV = (TextView) findViewById(R.id.location_text);
 		mQueryCityET = (EditText) findViewById(R.id.queryCityText);
+		showButton = (LinearLayout)findViewById(R.id.showButton);
+		mButtonCanal = (Button)findViewById(R.id.butn_cancel);
+		mButtonSure = (Button)findViewById(R.id.butn_sure);
 		mBackBtn.setOnClickListener(this);
 		mLocationTV.setOnClickListener(this);
 		mQueryCityET.addTextChangedListener(this);
+		mButtonCanal.setOnClickListener(this);
+		mButtonSure.setOnClickListener(this);
 		String cityName = getCityname();
 		if (TextUtils.isEmpty(cityName)) {
 			startLocation(mCityNameStatus);
@@ -82,6 +89,12 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 			break;
 		case R.id.location_text:
 			startLocation(mCityNameStatus);
+			break;
+		case R.id.butn_cancel:
+			doNoShowButton();
+			break;
+		case R.id.butn_sure:
+			doSavaEditCityname();
 			break;
 		default:
 			break;
@@ -151,11 +164,7 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			// TODO Auto-generated method stub
-			if (TextUtils.isEmpty(s)) {
-				//mQueryCityExitBtn.setVisibility(View.GONE);
-			} else {
-				//mQueryCityExitBtn.setVisibility(View.VISIBLE);
-			}
+			isCityname();
 		}
 
 		@Override
@@ -165,8 +174,18 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 		}
 		
 		private void doBeforeTextChanged() {
-//			if (mQueryCityListView.getVisibility() == View.GONE) {
-//				mQueryCityListView.setVisibility(View.VISIBLE);
-//			}
+			if (showButton.getVisibility() == View.GONE) {
+				showButton.setVisibility(View.VISIBLE);
+			}
+		}
+		private void isCityname(){
+			//判断是否是城市名称
+		}
+		
+		private void doNoShowButton(){
+			showButton.setVisibility(View.GONE);
+		}
+		private void doSavaEditCityname(){
+			
 		}
 }
