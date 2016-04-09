@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 import com.goodweather.adapter.WeatherForecastListAdapter;
 import com.goodweather.adapter.WeatherSuggestionListAdapter;
 import com.goodweather.mod.WeatherInfoData;
@@ -14,6 +13,7 @@ import com.goodweather.mod.WeatherInfo.HeWeatherBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.DailyForecastBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.SuggestionBean;
 import com.goodweather.ui.util.DialogUtil;
+import com.goodweather.ui.util.WeatherImg;
 import com.goodweather.util.HttpUntil;
 import com.goodweather.util.LocationUtils;
 import com.goodweather.util.NetUtil;
@@ -44,6 +44,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -97,11 +98,12 @@ public class MainActivity extends Activity {
 	private ImageView about;
 	private ImageView refresh;
 	private ImageView location;
-	
+
 	private TextView updateTimeText;
 	private ScrollView scrollView;
-	
-	private ImageView weatherIcon;
+	private RelativeLayout aqiView;
+
+	// private ImageView weatherIcon;
 	private TextView currentTemperatureText;
 	private TextView currentWeatherText;
 	private TextView peopletemperatureText;
@@ -109,7 +111,7 @@ public class MainActivity extends Activity {
 	private TextView humText;
 	private ListView weatherForecastList;
 	private ListView weatherSuggestionList;
-//	private ProgressDialog dialog;
+	// private ProgressDialog dialog;
 	private Dialog mdialog;
 	/**
 	 * 初始化AqiView
@@ -119,8 +121,6 @@ public class MainActivity extends Activity {
 	private TextView Pm25;
 	private TextView Pm10;
 	private TextView So2;
-	
-	
 
 	/**
 	 * 定位
@@ -134,11 +134,12 @@ public class MainActivity extends Activity {
 			// TODO Auto-generated method stub
 			Log.d(TAG, "city--->" + city);
 			// mLocationTV.setText(formatBigMessage(city));
-			saveLocationCityname(city);
+			// saveLocationCityname(city);
+			saveCityname(city);
 			initdata();
-			//dialog.dismiss();
+			// dialog.dismiss();
 			mdialog.dismiss();
-			Toast.makeText(MainActivity.this,R.string.getlocation_success, Toast.LENGTH_SHORT).show();
+			Toast.makeText(MainActivity.this, R.string.getlocation_success, Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
@@ -165,10 +166,11 @@ public class MainActivity extends Activity {
 			mLocationUtils.startLocation();// 开始定位
 		}
 	}
-	private void saveLocationCityname(String cityname){
+
+	private void saveCityname(String cityname) {
 		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
 		Editor mEditor = mPreferences.edit();
-		mEditor.putString(MyApplication.getLocationcityname(),cityname);
+		mEditor.putString(MyApplication.getCityname(), cityname);
 		mEditor.commit();
 	}
 
@@ -196,45 +198,129 @@ public class MainActivity extends Activity {
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		
-		
-	}
 
-	
+	}
 
 	private void initView() {
 		// 新界面初始化
-		mainView = (LinearLayout)findViewById(R.id.weather_bg);
+		mainView = (LinearLayout) findViewById(R.id.weather_bg);
+		scrollView = (ScrollView) findViewById(R.id.scroll_view);
+		scrollView.smoothScrollTo(0, 10);
+		initTitleView();//初始化Title
+		initNowView();// 初始化实时天气
+		initForecastView();// 初始化预报信息
+		initAqiView();// 初始化Aqi信息
+		initSuggestionView();//初始化指数信息
+	}
+
+	private void initWeatherdate() {
+		mHeWeatherBean = WeatherInfoData.initHeWeatherData();
+		if (mHeWeatherBean != null) {
+			initTitleData();//初始化title
+			initNowData();// 初始化实时天气数据
+			initAqiData();// 初始化Aqi数据
+		} else {
+			Toast.makeText(MainActivity.this, "获取数据失败，请稍后重试！", Toast.LENGTH_LONG);
+		}
+
+	}
+
+	private void initViewData() {
+		initTitleViewData();//设置title
+		initNowViewData();// 设置实时天气显示数据
+		initForecastData();// 设置预报列表
+		initAqiViewData();// 设置Aqi数据显示
+		initSuggestionData();//设置指数数据
+	}
+
+	private void initdata() {
+		if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
+			Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
+			// return;
+		} else {
+			mThread = new Thread(mRunnable);
+			mThread.start();
+		}
+	}
+
+	private Handler mHandler = new Handler() {
+
+		@Override
+		public void handleMessage(Message msg) {
+			// TODO Auto-generated method stub
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case MSG_SUCCESS:
+				initWeatherdate();
+				initViewData();
+				break;
+			case MSG_FAILURE:
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
+
+	Runnable mRunnable = new Runnable() {
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {
+				String info = HttpUntil.DownloadUrl(initCityName());
+				saveDownloadInfo(info);
+				mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
+			} catch (Exception e) {
+				// TODO: handle exception
+			}
+		}
+	};
+
+	private void dialogShow(int tag) {
+		/*
+		 * dialog = new ProgressDialog(MainActivity.this);
+		 * dialog.setMessage(info); dialog.setCanceledOnTouchOutside(false);
+		 * dialog.show();
+		 */
+		mdialog = DialogUtil.getCustomeDialog(MainActivity.this, R.style.load_dialog, R.layout.custom_progress_dialog);
+		TextView titleTxtv = (TextView) mdialog.findViewById(R.id.dialogText);
+		if (tag == 1) {
+			titleTxtv.setText(R.string.getlocation_wait);
+		} else if (tag == 2) {
+			titleTxtv.setText(R.string.please_wait);
+		}
+		mdialog.show();
+	}
+
+	/**
+	 * 初始化title
+	 */
+	private void initTitleView(){
 		changeCity = (LinearLayout) findViewById(R.id.change_city_layout);
 		cityText = (TextView) findViewById(R.id.city);
 		share = (ImageView) findViewById(R.id.share);
 		about = (ImageView) findViewById(R.id.about);
 		refresh = (ImageView) findViewById(R.id.refresh);
 		location = (ImageView) findViewById(R.id.location);
-		
 		updateTimeText = (TextView) findViewById(R.id.update_time);
-		scrollView = (ScrollView) findViewById(R.id.scroll_view);
-		scrollView.smoothScrollTo(0, 10);
-		// weatherIcon = (ImageView) findViewById(R.id.weather_icon);
-		currentTemperatureText = (TextView) findViewById(R.id.current_temperature);
-		currentWeatherText = (TextView) findViewById(R.id.current_weather);
-		peopletemperatureText = (TextView) findViewById(R.id.people_temperature);
-		windText = (TextView) findViewById(R.id.wind);
-		humText = (TextView) findViewById(R.id.humidity);
-		// dateText = (TextView) findViewById(R.id.date);
-
-		weatherForecastList = (ListView) findViewById(R.id.weather_forecast_list);
-		initAqiView();
-		weatherForecastList.setFocusable(false);
-		weatherSuggestionList = (ListView) findViewById(R.id.weather_suggestion_list);
-		weatherSuggestionList.setFocusable(false);
+		
 		changeCity.setOnClickListener(new ButtonListener());
 		share.setOnClickListener(new ButtonListener());
 		about.setOnClickListener(new ButtonListener());
 		refresh.setOnClickListener(new ButtonListener());
 		location.setOnClickListener(new ButtonListener());
 	}
-
+	private void initTitleData(){
+		cityname = mHeWeatherBean.getBasic().getCity().toString();
+		updateTime = mHeWeatherBean.getBasic().getUpdate().getLoc().toString();
+	}
+	private void initTitleViewData(){
+		cityText.setText(cityname);
+		updateTimeText.setText(updateTime);
+	}
+	
+	
 	class ButtonListener implements OnClickListener {
 
 		@Override
@@ -268,113 +354,46 @@ public class MainActivity extends Activity {
 
 	}
 	
-	private void AboutInfo(){
-		LayoutInflater inflater = getLayoutInflater();
-		View dialogLayout = inflater.inflate(R.layout.weather_dialog,
-				(ViewGroup) findViewById(R.layout.weather_dialog));
-		TextView version = (TextView) dialogLayout.findViewById(R.id.version);
-
-		version.setText("实现功能如下：\n欢迎使用，谢谢");
-		builder = new Builder(MainActivity.this);
-		builder.setTitle("关于");
-		builder.setView(dialogLayout);
-		builder.setPositiveButton("确定", null);
-		builder.setCancelable(false);
-		builder.show();
+	
+	/**
+	 * 初始化实时天气信息
+	 */
+	private void initNowView() {
+		currentTemperatureText = (TextView) findViewById(R.id.current_temperature);
+		currentWeatherText = (TextView) findViewById(R.id.current_weather);
+		peopletemperatureText = (TextView) findViewById(R.id.people_temperature);
+		windText = (TextView) findViewById(R.id.wind);
+		humText = (TextView) findViewById(R.id.humidity);
 	}
 
-	private void initWeatherdate() {
-		mHeWeatherBean = WeatherInfoData.initHeWeatherData();
-		if (mHeWeatherBean != null) {
-			cityname = mHeWeatherBean.getBasic().getCity().toString();
-			updateTime = mHeWeatherBean.getBasic().getUpdate().getLoc().toString();
-			currentTemperature = mHeWeatherBean.getNow().getTmp().toString() + "°";
-			currentWeather = mHeWeatherBean.getNow().getCond().getTxt().toString();
-			peopletemperature = mHeWeatherBean.getNow().getFl().toString() + "°";
-			windDir = mHeWeatherBean.getNow().getWind().getDir().toString();
-			windSc = mHeWeatherBean.getNow().getWind().getSc().toString();
-			hum = mHeWeatherBean.getNow().getHum().toString();
-			initAqiData();
-		} else {
-			Toast.makeText(MainActivity.this, "获取数据失败，请稍后重试！", Toast.LENGTH_LONG);
-		}
-		
-
+	private void initNowData() {
+		currentTemperature = mHeWeatherBean.getNow().getTmp().toString() + "°";
+		currentWeather = mHeWeatherBean.getNow().getCond().getTxt().toString();
+		peopletemperature = mHeWeatherBean.getNow().getFl().toString() + "°";
+		windDir = mHeWeatherBean.getNow().getWind().getDir().toString();
+		windSc = mHeWeatherBean.getNow().getWind().getSc().toString();
+		hum = mHeWeatherBean.getNow().getHum().toString();
 	}
 
-	private void initViewData() {
-		cityText.setText(cityname);
-		updateTimeText.setText(updateTime);
+	private void initNowViewData() {
 		currentTemperatureText.setText(currentTemperature);
 		currentWeatherText.setText(currentWeather);
 		peopletemperatureText.setText("体感温度：" + peopletemperature);
 		windText.setText(windDir + windSc + "级");
 		humText.setText("湿度" + hum + "%");
+	}
+
+	/**
+	 * 初始化天气预报信息
+	 * 
+	 */
+	private void initForecastView() {
+		weatherForecastList = (ListView) findViewById(R.id.weather_forecast_list);
+		weatherForecastList.setFocusable(false);
+	}
+
+	private void initForecastData() {
 		weatherForecastList.setAdapter(new WeatherForecastListAdapter(this));
-		initAqiViewData();
-		weatherSuggestionList.setAdapter(new WeatherSuggestionListAdapter(this));
-	}
-
-	private void initdata() {
-		if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
-			Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
-			// return;
-		} else {
-			mThread = new Thread(mRunnable);
-			mThread.start();
-		}
-	}
-	
-	
-	private Handler mHandler = new Handler() {
-		
-		@Override
-		public void handleMessage(Message msg) {
-			// TODO Auto-generated method stub
-			super.handleMessage(msg);
-			switch (msg.what) {
-			case MSG_SUCCESS:
-				initWeatherdate();
-				initViewData();
-				break;
-			case MSG_FAILURE:
-				break;
-
-			default:
-				break;
-			}
-		}
-	};
-
-	Runnable mRunnable = new Runnable() {
-		@Override
-		public void run() {
-			// TODO Auto-generated method stub
-			try {
-				String info = HttpUntil.DownloadUrl(initCityName());
-				saveDownloadInfo(info);
-				mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
-			} catch (Exception e) {
-				// TODO: handle exception
-			}
-		}
-	};
-	
-	private void dialogShow(int tag){
-	/*	dialog = new ProgressDialog(MainActivity.this);
-		dialog.setMessage(info);
-		dialog.setCanceledOnTouchOutside(false);
-		dialog.show();*/
-		mdialog = DialogUtil.getCustomeDialog(MainActivity.this, 
-				R.style.load_dialog, R.layout.custom_progress_dialog);
-		TextView titleTxtv = (TextView) mdialog
-				.findViewById(R.id.dialogText);
-		if (tag == 1) {
-			titleTxtv.setText(R.string.getlocation_wait);
-		} else if (tag == 2) {
-			titleTxtv.setText(R.string.please_wait);
-		}
-		mdialog.show();
 	}
 
 	/**
@@ -392,7 +411,7 @@ public class MainActivity extends Activity {
 			String tmp = mdaily.getTmp().getMin() + "°" + "~" + mdaily.getTmp().getMax() + "°";
 			String wind = mdaily.getWind().getDir().toString() + mdaily.getWind().getSc().toString();
 			map.put("date", mdaily.getDate().toString());
-			map.put("img", getWeatherImg(weather));
+			map.put("img", WeatherImg.getWeatherImg(weather));
 			map.put("weather", weather);
 			map.put("temperature", tmp);
 			map.put("wind", wind);
@@ -401,6 +420,50 @@ public class MainActivity extends Activity {
 		return list;
 	}
 
+	
+	/**
+	 * 初始化aqi信息
+	 */
+	private void initAqiView() {
+		aqiView = (RelativeLayout) findViewById(R.id.aqi_view);
+		aqiView.setVisibility(View.GONE);
+		AqiLever = (TextView) findViewById(R.id.aqi_level);
+		Aqi = (TextView) findViewById(R.id.aqi);
+		Pm25 = (TextView) findViewById(R.id.pm25);
+		Pm10 = (TextView) findViewById(R.id.pm_10);
+		So2 = (TextView) findViewById(R.id.so_2);
+	}
+
+	private void initAqiData() {
+		if (mHeWeatherBean.getAqi() != null) {
+			aqiView.setVisibility(View.VISIBLE);
+			aqilever = mHeWeatherBean.getAqi().getCity().getQlty().toString();
+			aqi = mHeWeatherBean.getAqi().getCity().getAqi().toString();
+			pm25 = mHeWeatherBean.getAqi().getCity().getPm25().toString();
+			pm10 = mHeWeatherBean.getAqi().getCity().getPm10().toString();
+			so2 = mHeWeatherBean.getAqi().getCity().getSo2().toString();
+		} else {
+		}
+	}
+
+	private void initAqiViewData() {
+		AqiLever.setText(aqilever);
+		Aqi.setText(aqi);
+		Pm25.setText(pm25);
+		Pm10.setText(pm10);
+		So2.setText(so2);
+	}
+	
+	/**
+	 * 初始化指数信息
+	 */
+	private void initSuggestionView(){
+		weatherSuggestionList = (ListView) findViewById(R.id.weather_suggestion_list);
+		weatherSuggestionList.setFocusable(false);
+	}
+	private void initSuggestionData(){
+		weatherSuggestionList.setAdapter(new WeatherSuggestionListAdapter(this));
+	}
 	/**
 	 * 指数信息
 	 */
@@ -472,104 +535,27 @@ public class MainActivity extends Activity {
 		return list;
 	}
 
+	
+	
+	
+
 	/**
-	 * 根据天气信息设置天气图片
+	 * 初始化cityname
 	 * 
-	 * @param weather
-	 *            天气信息
-	 * @return 对应的天气图片id
+	 * @return
 	 */
-	private static int getWeatherImg(String weather) {
-		int img = 0;
-		if (weather.contains("转")) {
-			weather = weather.substring(0, weather.indexOf("转"));
-		}
-		if (weather.contains("晴")) {
-			img = R.drawable.qing00;
-		} else if (weather.contains("多云")) {
-			img = R.drawable.duoyun01;
-		} else if (weather.contains("阴")) {
-			img = R.drawable.yin02;
-		} else if (weather.contains("阵雨")) {
-			img = R.drawable.zhenyu03;
-		} else if (weather.contains("雷阵雨")) {
-			img = R.drawable.leizhenyu04;
-		} else if (weather.contains("雷阵雨伴有冰雹")) {
-			img = R.drawable.leibing05;
-		} else if (weather.contains("雨夹雪")) {
-			img = R.drawable.yujiaxue06;
-		} else if (weather.contains("小雨")) {
-			img = R.drawable.xiaoyu07;
-		} else if (weather.contains("中雨")) {
-			img = R.drawable.zhongyu08;
-		} else if (weather.contains("大雨")) {
-			img = R.drawable.dayu09;
-		} else if (weather.contains("暴雨")) {
-			img = R.drawable.baoyu10;
-		} else if (weather.contains("大暴雨")) {
-			img = R.drawable.dabaoyu11;
-		} else if (weather.contains("特大暴雨")) {
-			img = R.drawable.tedabao12;
-		} else if (weather.contains("阵雪")) {
-			img = R.drawable.zhenxue13;
-		} else if (weather.contains("小雪")) {
-			img = R.drawable.xiaoxue14;
-		} else if (weather.contains("中雪")) {
-			img = R.drawable.zhongxue15;
-		} else if (weather.contains("大雪")) {
-			img = R.drawable.daxue16;
-		} else if (weather.contains("暴雪")) {
-			img = R.drawable.baoxue17;
-		} else if (weather.contains("雾")) {
-			img = R.drawable.wu18;
-		} else if (weather.contains("冻雨")) {
-			img = R.drawable.dongyu19;
-		} else if (weather.contains("沙尘暴")) {
-			img = R.drawable.shachengbao20;
-		} else if (weather.contains("浮尘")) {
-			img = R.drawable.fuchen29;
-		} else if (weather.contains("扬沙")) {
-			img = R.drawable.yangsha30;
-		} else if (weather.contains("强沙尘暴")) {
-			img = R.drawable.qiangshachen31;
-		} else if (weather.contains("霾")) {
-			img = R.drawable.qiangshachen31;
-		} else {
-			img = R.drawable.qing00;
-		}
-		return img;
-	}
-
-	private void initAqiView() {
-		AqiLever = (TextView) findViewById(R.id.aqi_level);
-		Aqi = (TextView) findViewById(R.id.aqi);
-		Pm25 = (TextView) findViewById(R.id.pm25);
-		Pm10 = (TextView) findViewById(R.id.pm_10);
-		So2 = (TextView) findViewById(R.id.so_2);
-	}
-
-	private void initAqiData() {
-		aqilever = mHeWeatherBean.getAqi().getCity().getQlty().toString();
-		aqi = mHeWeatherBean.getAqi().getCity().getAqi().toString();
-		pm25 = mHeWeatherBean.getAqi().getCity().getPm25().toString();
-		pm10 = mHeWeatherBean.getAqi().getCity().getPm10().toString();
-		so2 = mHeWeatherBean.getAqi().getCity().getSo2().toString();
-	}
-
-	private void initAqiViewData() {
-		AqiLever.setText(aqilever);
-		Aqi.setText(aqi);
-		Pm25.setText(pm25);
-		Pm10.setText(pm10);
-		So2.setText(so2);
-	}
-
 	private String initCityName() {
 		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
 		String cityname = mPreferences.getString(MyApplication.getCityname(), "北京");
 		return cityname;
 	}
 
+	/**
+	 * 保存获取的天气数据
+	 * 
+	 * @param weatherinfo
+	 * @throws Exception
+	 */
 	public void saveDownloadInfo(String weatherinfo) throws Exception {
 		if (weatherinfo != null) {
 			String filename = MyApplication.getFilename();
@@ -578,59 +564,78 @@ public class MainActivity extends Activity {
 			outputStream.write(weatherinfo.getBytes());
 			outputStream.close();
 		} else {
-			
+
 		}
-		
+
 	}
-	
-	private void share(){
-		new AsyncTask<Void, Void, File>(){
+
+	/**
+	 * 截图分享设置
+	 */
+	private void share() {
+		new AsyncTask<Void, Void, File>() {
 			Dialog mdialog;
-			
+
 			protected void onPreExecute() {
 				super.onPreExecute();
-				mdialog = DialogUtil.getCustomeDialog(MainActivity.this, R.style.load_dialog, R.layout.custom_progress_dialog);
-				TextView titleTxtv = (TextView) mdialog
-						.findViewById(R.id.dialogText);
+				mdialog = DialogUtil.getCustomeDialog(MainActivity.this, R.style.load_dialog,
+						R.layout.custom_progress_dialog);
+				TextView titleTxtv = (TextView) mdialog.findViewById(R.id.dialogText);
 				titleTxtv.setText(R.string.please_wait);
 				mdialog.show();
 			};
+
 			@Override
 			protected File doInBackground(Void... params) {
 				// TODO Auto-generated method stub
 				try {
 					new File(getFilesDir(), "share.png").deleteOnExit();
-					FileOutputStream fileOutputStream = openFileOutput(
-							"share.png", 1);
+					FileOutputStream fileOutputStream = openFileOutput("share.png", 1);
 					mainView.setDrawingCacheEnabled(true);
 					mainView.getDrawingCache().compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
-					return new File(getFilesDir(),"share.png");
+					return new File(getFilesDir(), "share.png");
 				} catch (FileNotFoundException e) {
 					// TODO: handle exception
 				}
 				return null;
 			}
-			
+
 			protected void onPostExecute(File result) {
 				super.onPostExecute(result);
 				mdialog.dismiss();
 				if (result == null) {
-					Toast.makeText(MainActivity.this, R.string.share_fail,
-							Toast.LENGTH_SHORT).show();
+					Toast.makeText(MainActivity.this, R.string.share_fail, Toast.LENGTH_SHORT).show();
 					return;
 				}
 				intent = new Intent(Intent.ACTION_SEND);
 				intent.setType("image/*");
 				intent.putExtra(Intent.EXTRA_SUBJECT, "好友分享");
 				intent.putExtra(Intent.EXTRA_TEXT, "我正在使用Good天气，可以随时随地查看天气信息，是您出差、旅行的贴心助手！推荐你也试试~");
-				intent.putExtra("android.intent.extra.STREAM",
-						Uri.fromFile(result));
+				intent.putExtra("android.intent.extra.STREAM", Uri.fromFile(result));
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 				startActivity(Intent.createChooser(intent, "好友分享"));
-				
+
 			};
-			
+
 		}.execute();
+	}
+	
+	/**
+	 * 关于
+	 */
+	private void AboutInfo() {
+		LayoutInflater inflater = getLayoutInflater();
+		View dialogLayout = inflater.inflate(R.layout.weather_dialog,
+				(ViewGroup) findViewById(R.layout.weather_dialog));
+		TextView version = (TextView) dialogLayout.findViewById(R.id.version);
+
+		version.setText("实现功能如下：\n欢迎使用，谢谢");
+		builder = new Builder(MainActivity.this);
+		builder.setTitle("关于");
+		builder.setView(dialogLayout);
+		builder.setPositiveButton("确定", null);
+		builder.setCancelable(false);
+		builder.show();
 	}
 
 }

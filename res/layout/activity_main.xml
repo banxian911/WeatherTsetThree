@@ -41,13 +41,10 @@
             layout="@layout/weather_now"
             />
          	<include 
-         	    android:id="@+id/forecast_list"
          	    android:layout_width="match_parent"
          	    android:layout_height="wrap_content"
-         	    android:layout_below="@+id/nowweather"
          	    layout="@layout/weather_forecast_listview"/>
          	<include 
-         	    android:id="@+id/aqi_view"
          	    android:layout_width="match_parent"
          	    android:layout_height="wrap_content"
          	    layout="@layout/weather_aqi"/>
