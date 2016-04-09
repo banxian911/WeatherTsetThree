@@ -35,6 +35,12 @@
         <item name="android:layout_marginBottom">@dimen/margin_xs</item>
         <item name="android:src">@color/forecast_gray</item>
     </style>
+     <style name="Line.Solid_one" parent="@style/Line">
+        <item name="android:layout_margin">@dimen/indicator_right_padding</item>
+        <item name="android:src">@color/forecast_gray</item>
+    </style>
+    
+    
     <style name="Line.Dotted" parent="@style/Line">
         <item name="android:layout_marginBottom">0.0dip</item>
         <item name="android:src">@drawable/dotted_line_624</item>

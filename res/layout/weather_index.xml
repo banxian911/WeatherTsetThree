@@ -9,47 +9,16 @@
     android:background="@drawable/weather_forcast_bg"
     android:orientation="vertical" >
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
-
-        <ImageView
-            android:id="@+id/weather_suggestion_icon"
-            android:layout_width="25dp"
-            android:layout_height="22dp"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="2dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/weather_forecast_icon" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/weather_forecast_icon"
-            android:text="指数"
-            android:textColor="@color/white"
-            android:textSize="14sp" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="15dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/drag_view_handle" />
-    </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
+    <TextView
+        style="@style/Label"
         android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/trend_bg_line" />
+        android:layout_marginTop="5dp"
+        android:text="指数" />
+
+    <ImageView
+        android:id="@+id/divider"
+        style="@style/Line.Solid_one"
+        android:scaleType="fitXY" />
 
     <ListView
         android:id="@+id/weather_suggestion_list"
@@ -60,22 +29,5 @@
         android:divider="@drawable/trend_bg_line"
         android:dividerHeight="1dp"
         android:listSelector="@color/transparent" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/trend_bg_line" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="10dp"
-        android:layout_marginLeft="5dp"
-        android:text="指数信息由和风天气提供"
-        android:textColor="@color/light_grey"
-        android:textSize="14sp" />
 
 </LinearLayout>

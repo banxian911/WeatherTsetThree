@@ -178,7 +178,6 @@
         android:layout_below="@id/dotline7"
         android:paddingTop="4dip"
         android:gravity="bottom|right"
-        android:text="中国环境检测总站"
         android:textColor="@android:color/white"
         android:textSize="@dimen/text_md"
          />

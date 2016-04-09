@@ -133,11 +133,8 @@ public class MainActivity extends Activity {
 		public void succeed(String city) {
 			// TODO Auto-generated method stub
 			Log.d(TAG, "city--->" + city);
-			// mLocationTV.setText(formatBigMessage(city));
-			// saveLocationCityname(city);
 			saveCityname(city);
 			initdata();
-			// dialog.dismiss();
 			mdialog.dismiss();
 			Toast.makeText(MainActivity.this, R.string.getlocation_success, Toast.LENGTH_SHORT).show();
 		}
@@ -535,9 +532,6 @@ public class MainActivity extends Activity {
 		return list;
 	}
 
-	
-	
-	
 
 	/**
 	 * 初始化cityname
