@@ -2,14 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_welcom"
     >
-
-    <TextView
-        android:id="@+id/imageView1"
-        android:layout_width="fill_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_welcom" />
-
     <ImageView
         android:id="@+id/imageView2"
         android:layout_width="wrap_content"
