@@ -362,8 +362,8 @@ public class MainActivity extends Activity {
 	 * 语音合成
 	 */
 	private void speechPlay(){
-		String infoOne ="现在开始为您播报天气:";
-		String infoTwo = "今天天气:"+currentWeatherText.getText().toString();
+		String infoOne ="现在开始为您播报:"+cityText.getText().toString();
+		String infoTwo = "，今天天气:"+currentWeatherText.getText().toString();
 		String infoThree = ",温度:"+currentTemperature+"摄氏度";
 		String infoFour = ",体感温度:"+peopletemperature+"摄氏度";
 		String infoFive = ",风力情况："+windText.getText().toString();
