@@ -60,4 +60,12 @@
         android:textSize="20sp" />
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/speechviem"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_alignBottom="@+id/current_weather"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/voice_empty" />
+
 </RelativeLayout>

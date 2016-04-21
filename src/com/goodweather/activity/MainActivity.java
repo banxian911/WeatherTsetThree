@@ -17,7 +17,10 @@ import com.goodweather.ui.util.WeatherImg;
 import com.goodweather.util.HttpUntil;
 import com.goodweather.util.LocationUtils;
 import com.goodweather.util.NetUtil;
+import com.goodweather.util.SpeechSynthesisUtils;
 import com.goodweather.util.LocationUtils.LocationListener;
+import com.iflytek.cloud.ErrorCode;
+import com.iflytek.cloud.SpeechSynthesizer;
 
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
@@ -27,6 +30,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -111,6 +115,7 @@ public class MainActivity extends Activity {
 	private TextView humText;
 	private ListView weatherForecastList;
 	private ListView weatherSuggestionList;
+	private ImageView speech;
 	// private ProgressDialog dialog;
 	private Dialog mdialog;
 	/**
@@ -344,13 +349,39 @@ public class MainActivity extends Activity {
 				dialogShow(1);
 				startLocation(mCityNameStatus);
 				break;
+			case R.id.speechviem:
+				speechPlay();
+				break;
 			default:
 				break;
 			}
 		}
 
 	}
-	
+	/**
+	 * 语音合成
+	 */
+	private void speechPlay(){
+		String infoOne ="现在开始为您播报天气:";
+		String infoTwo = "今天天气:"+currentWeatherText.getText().toString();
+		String infoThree = ",温度:"+currentTemperature+"摄氏度";
+		String infoFour = ",体感温度:"+peopletemperature+"摄氏度";
+		String infoFive = ",风力情况："+windText.getText().toString();
+		String infoSix = ",湿度:百分之"+hum; 
+		String weatherInfo = infoOne+infoTwo+infoThree+infoFour+infoFive+infoSix;
+		SpeechSynthesisUtils.setParam(MainActivity.this);
+		int code = SpeechSynthesisUtils.mTts.startSpeaking(weatherInfo, SpeechSynthesisUtils.mTtsListener);
+		if (code != ErrorCode.SUCCESS) {
+			if(code == ErrorCode.ERROR_COMPONENT_NOT_INSTALLED){
+				//未安装则跳转到提示安装页面
+				//mInstaller.install();
+				dialogShow(1);
+			}else {
+			//	showTip("语音合成失败,错误码: " + code);	
+				dialogShow(2);
+			}
+		}
+	}
 	
 	/**
 	 * 初始化实时天气信息
@@ -361,6 +392,8 @@ public class MainActivity extends Activity {
 		peopletemperatureText = (TextView) findViewById(R.id.people_temperature);
 		windText = (TextView) findViewById(R.id.wind);
 		humText = (TextView) findViewById(R.id.humidity);
+		speech = (ImageView)findViewById(R.id.speechviem);
+		speech.setOnClickListener(new ButtonListener());
 	}
 
 	private void initNowData() {
