@@ -25,12 +25,14 @@ public class HttpUntil {
 		String strRead = null;
 		StringBuffer mStringBuffer = new StringBuffer();
 		InputStream stream = null;
-
-		URL murl = new URL(url);
+		
+		URL murl = new URL(url);//创建一个URL对象
+		//利用HttpsURLConnection对象从网络中获取网页数据
 		HttpsURLConnection connection = (HttpsURLConnection) murl.openConnection();
-		connection.setReadTimeout(10000);
-		connection.setRequestMethod("GET");
+		connection.setReadTimeout(10000);//设置连接超时
+		connection.setRequestMethod("GET");//设置使用GET的方式发送
 		int code = connection.getResponseCode();
+		//对响应码进行判断
 		if (code == 200) {
 			stream = connection.getInputStream();
 		} else {

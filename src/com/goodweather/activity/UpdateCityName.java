@@ -154,19 +154,19 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 			}
 			return spannableStringBuilder;
 		}
-
+		//这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换。
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 			// TODO Auto-generated method stub
 			doBeforeTextChanged();
 		}
-
+		//这个方法是在Text改变过程中触发调用的，它的意思就是说在原有的文本s中，从start开始的count个字符替换长度为before的旧文本，注意这里没有将要之类的字眼，也就是说一句执行了替换动作。
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			// TODO Auto-generated method stub
 			isCityname();
 		}
-
+		//这个方法就是在EditText内容已经改变之后调用
 		@Override
 		public void afterTextChanged(Editable s) {
 			// TODO Auto-generated method stub

@@ -39,6 +39,7 @@ public class WeatherSuggestionListAdapter extends BaseAdapter {
 		return 0;
 	}
 
+	// 列表每一项横向的内容
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub

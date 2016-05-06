@@ -24,6 +24,7 @@ public class WeatherForecastListAdapter extends BaseAdapter {
 	@Override
 	public int getCount() {
 		// TODO Auto-generated method stub
+		//获取列表长度
 		return MainActivity.getForcecastData().size();
 	}
 
@@ -39,7 +40,14 @@ public class WeatherForecastListAdapter extends BaseAdapter {
 		return 0;
 	}
 
-	// 列表每一项横向的内容
+	/**
+	 * getView()有三个参数，position表示将显示的是第几 行，covertView是从布局文件中inflate来的布局。
+	 * 我们写一个类来描述布局文件中的各个组件，比如ImageView，TextView 等，然后判断convertView是否为空，
+	 * 如果为空就从inflate中拿到布局，并新建一个ViewHolder，然后从convertView中 拿到布局中的各个组件，
+	 * 同时把ViewHolder放到tag中去，下次就不用重写new了，直接从tag中拿就可以了，然后把布局中的各个组件都设上对 应的值，
+	 * 这里的Position对应到含有HashMap的List中的position。
+	 */
+	 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		// TODO Auto-generated method stub
@@ -65,7 +73,7 @@ public class WeatherForecastListAdapter extends BaseAdapter {
 		holder.wind.setText(MainActivity.getForcecastData().get(position).get("wind").toString());
 		return convertView;
 	}
-
+	//列表中的各组件
 	class ViewHolder {
 		TextView date;
 		ImageView img;

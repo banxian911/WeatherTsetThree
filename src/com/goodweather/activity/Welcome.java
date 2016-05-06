@@ -17,13 +17,14 @@ public class Welcome extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);//隐藏系统状态栏
 		setContentView(R.layout.activity_welcome);
-
+		//开启线程，进行延时操作
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() { // TODO Auto-generated method stub
+				//根据判断是否第一次使用进入不同页面
 				if (isFirstUse()) {
 					Intent mIntent = new Intent(Welcome.this, GuideLauncherActivity.class);
 					startActivity(mIntent);
@@ -36,7 +37,7 @@ public class Welcome extends Activity {
 			}
 		};
 		Handler mHandler = new Handler();
-		mHandler.postDelayed(runnable, 3 * 1000);
+		mHandler.postDelayed(runnable, 3 * 1000);//延时3秒
 
 	}
 
@@ -63,7 +64,7 @@ public class Welcome extends Activity {
 		 */
 
 	}
-
+	//判断是否第一次使用
 	private Boolean isFirstUse() {
 		boolean is = false;
 		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), Context.MODE_PRIVATE);

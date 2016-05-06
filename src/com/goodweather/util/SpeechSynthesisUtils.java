@@ -20,7 +20,7 @@ public class SpeechSynthesisUtils {
 	private static String mEngineType = SpeechConstant.TYPE_CLOUD;
 
 	// 默认发音人
-	private static String voicer = "xiaoyan";
+	private static String voicer = "vinn";
 
 	private static String speed = "50";// 默认语速
 	private static String pitch = "50";// 默认语调
