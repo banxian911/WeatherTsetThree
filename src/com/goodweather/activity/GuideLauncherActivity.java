@@ -18,7 +18,7 @@ import com.goodweather.ViewFragment.PrivateMessageLauncherFragment;
 import com.goodweather.ViewFragment.RewardLauncherFragment;
 import com.goodweather.ViewFragment.StereoscopicLauncherFragment;
 import com.goodweather.adapter.BaseFragmentAdapter;
-import com.goodweather.util.GuideViewPager;
+import com.goodweather.utils.GuideViewPager;
 
 
 /**

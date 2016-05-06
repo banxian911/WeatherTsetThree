@@ -1,9 +1,9 @@
 package com.goodweather.activity;
 
 
-import com.goodweather.util.LocationUtils;
-import com.goodweather.util.NetUtil;
-import com.goodweather.util.LocationUtils.LocationListener;
+import com.goodweather.utils.LocationUtils;
+import com.goodweather.utils.NetUtil;
+import com.goodweather.utils.LocationUtils.LocationListener;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class UpdateCityName extends Activity implements OnClickListener,TextWatcher{
+public class FindOtherCityInfo extends Activity implements OnClickListener,TextWatcher{
 
 	private String TAG = "UpdateCityName";
 	
@@ -114,7 +114,7 @@ public class UpdateCityName extends Activity implements OnClickListener,TextWatc
 		@Override
 		public void failed() {
 			// TODO Auto-generated method stub
-			Toast.makeText(UpdateCityName.this,R.string.getlocation_fail, Toast.LENGTH_LONG).show();
+			Toast.makeText(FindOtherCityInfo.this,R.string.getlocation_fail, Toast.LENGTH_LONG).show();
 		}
 		
 		@Override

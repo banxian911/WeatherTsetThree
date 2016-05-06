@@ -15,4 +15,5 @@
     <string name="please_wait">正在启动分享，请稍后......</string>
     <string name="share_to">您想分享到？</string>
 
+	<string name="about_info">实现功能如下：天气信息显示，不同城市查询，当前城市定位，语音播报等。\n欢迎使用，谢谢</string>    
 </resources>

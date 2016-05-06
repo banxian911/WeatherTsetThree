@@ -1,4 +1,4 @@
-package com.goodweather.ui.util;
+package com.goodweather.ui.utils;
 
 import com.goodweather.activity.R;
 

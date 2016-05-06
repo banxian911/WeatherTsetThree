@@ -391,6 +391,7 @@ containing a value of this type.
         public static final int welcome=0x7f090002;
     }
     public static final class string {
+        public static final int about_info=0x7f07000c;
         public static final int action_settings=0x7f070001;
         public static final int app_name=0x7f070000;
         public static final int enter_city_name=0x7f070004;

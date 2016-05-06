@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 /**
  * Viewpager适配器
- * @author apple
  *
  */
 public class BaseFragmentAdapter extends FragmentStatePagerAdapter {

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.goodweather.util.GuideViewPager
+    <com.goodweather.utils.GuideViewPager
         android:id="@+id/viewpager_launcher"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

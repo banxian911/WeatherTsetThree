@@ -1,4 +1,4 @@
-package com.goodweather.util;
+package com.goodweather.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;

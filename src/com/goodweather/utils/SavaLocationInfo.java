@@ -1,4 +1,4 @@
-package com.goodweather.util;
+package com.goodweather.utils;
 
 public class SavaLocationInfo {
 

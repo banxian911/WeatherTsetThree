@@ -1,4 +1,4 @@
-package com.goodweather.util;
+package com.goodweather.utils;
 
 import com.goodweather.activity.MainActivity;
 import com.iflytek.cloud.SpeechConstant;

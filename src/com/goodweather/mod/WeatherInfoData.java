@@ -3,7 +3,7 @@ package com.goodweather.mod;
 import java.io.IOException;
 
 import com.goodweather.mod.WeatherInfo.HeWeatherBean;
-import com.goodweather.util.ReadWeatherTXTInfo;
+import com.goodweather.utils.ReadWeatherTXTInfo;
 
 import android.util.Log;
 

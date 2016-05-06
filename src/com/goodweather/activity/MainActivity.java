@@ -12,13 +12,13 @@ import com.goodweather.mod.WeatherInfoData;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.DailyForecastBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.SuggestionBean;
-import com.goodweather.ui.util.DialogUtil;
-import com.goodweather.ui.util.WeatherImg;
-import com.goodweather.util.HttpUntil;
-import com.goodweather.util.LocationUtils;
-import com.goodweather.util.NetUtil;
-import com.goodweather.util.SpeechSynthesisUtils;
-import com.goodweather.util.LocationUtils.LocationListener;
+import com.goodweather.ui.utils.DialogUtil;
+import com.goodweather.ui.utils.WeatherImg;
+import com.goodweather.utils.HttpUntil;
+import com.goodweather.utils.LocationUtils;
+import com.goodweather.utils.NetUtil;
+import com.goodweather.utils.SpeechSynthesisUtils;
+import com.goodweather.utils.LocationUtils.LocationListener;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.SpeechSynthesizer;
 
@@ -330,7 +330,7 @@ public class MainActivity extends Activity {
 			switch (v.getId()) {
 			case R.id.change_city_layout:// 更换城市
 				intent = new Intent();
-				intent.setClass(MainActivity.this, UpdateCityName.class);
+				intent.setClass(MainActivity.this, FindOtherCityInfo.class);
 				startActivityForResult(intent, 100);
 				// finish();
 				break;
@@ -658,7 +658,7 @@ public class MainActivity extends Activity {
 				(ViewGroup) findViewById(R.layout.weather_dialog));
 		TextView version = (TextView) dialogLayout.findViewById(R.id.version);
 
-		version.setText("实现功能如下：\n欢迎使用，谢谢");
+		version.setText(R.string.about_info);
 		builder = new Builder(MainActivity.this);
 		builder.setTitle("关于");
 		builder.setView(dialogLayout);
