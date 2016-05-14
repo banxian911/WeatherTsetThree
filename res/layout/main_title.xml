@@ -88,23 +88,7 @@
                     android:layout_marginRight="1px"
                     android:background="@drawable/trend_bg_line" />
 
-                <RelativeLayout
-                    android:layout_width="45dp"
-                    android:layout_height="match_parent" >
-
-                    <ImageView
-                        android:id="@+id/refresh"
-                        android:layout_width="45dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:background="@drawable/title_bar_image_pressed_effect"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/btn_ic_next" />
-
-                   
-                </RelativeLayout>
+              
             </LinearLayout>
         </RelativeLayout>
 

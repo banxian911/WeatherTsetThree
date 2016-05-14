@@ -37,6 +37,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -100,8 +102,9 @@ public class MainActivity extends Activity {
 	private TextView cityText;
 	private ImageView share;
 	private ImageView about;
-	private ImageView refresh;
 	private ImageView location;
+	
+	private SwipeRefreshLayout refresh;
 
 	private TextView updateTimeText;
 	private ScrollView scrollView;
@@ -209,6 +212,7 @@ public class MainActivity extends Activity {
 		scrollView = (ScrollView) findViewById(R.id.scroll_view);
 		scrollView.smoothScrollTo(0, 10);
 		initTitleView();//初始化Title
+		initRefershView();//初始化下拉刷新
 		initNowView();// 初始化实时天气
 		initForecastView();// 初始化预报信息
 		initAqiView();// 初始化Aqi信息
@@ -253,6 +257,7 @@ public class MainActivity extends Activity {
 			super.handleMessage(msg);
 			switch (msg.what) {
 			case MSG_SUCCESS:
+				refresh.setRefreshing(false);
 				initWeatherdate();
 				initViewData();
 				break;
@@ -303,14 +308,13 @@ public class MainActivity extends Activity {
 		cityText = (TextView) findViewById(R.id.city);
 		share = (ImageView) findViewById(R.id.share);
 		about = (ImageView) findViewById(R.id.about);
-		refresh = (ImageView) findViewById(R.id.refresh);
 		location = (ImageView) findViewById(R.id.location);
 		updateTimeText = (TextView) findViewById(R.id.update_time);
 		
 		changeCity.setOnClickListener(new ButtonListener());
 		share.setOnClickListener(new ButtonListener());
 		about.setOnClickListener(new ButtonListener());
-		refresh.setOnClickListener(new ButtonListener());
+		//refresh.setOnClickListener(new ButtonListener());
 		location.setOnClickListener(new ButtonListener());
 	}
 	private void initTitleData(){
@@ -340,11 +344,11 @@ public class MainActivity extends Activity {
 			case R.id.about:// 关于本软的开发信息
 				AboutInfo();
 				break;
-			case R.id.refresh:// 更新按钮
+			/*case R.id.refresh:// 更新按钮
 				dialogShow(2);
 				initdata();
 				mdialog.dismiss();
-				break;
+				break;*/
 			case R.id.location:
 				dialogShow(1);
 				startLocation(mCityNameStatus);
@@ -358,6 +362,24 @@ public class MainActivity extends Activity {
 		}
 
 	}
+	
+	/**
+	 * 下拉刷新
+	 */
+	private void initRefershView(){
+		refresh = (SwipeRefreshLayout)findViewById(R.id.swip_refresh);
+		refresh.setSize(SwipeRefreshLayout.DEFAULT);
+		refresh.setOnRefreshListener(new OnRefreshListener() {
+			
+			@Override
+			public void onRefresh() {
+				// TODO Auto-generated method stub
+				initdata();
+			}
+		});
+	}
+	
+	
 	/**
 	 * 语音合成
 	 */
