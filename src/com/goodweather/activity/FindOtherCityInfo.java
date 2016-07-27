@@ -9,6 +9,7 @@ import com.goodweather.mod.City;
 import com.goodweather.utils.LocationUtils;
 import com.goodweather.utils.LocationUtils.LocationListener;
 import com.goodweather.utils.NetUtil;
+import com.goodweather.utils.SettingPreferenceUtils;
 
 import android.app.Activity;
 import android.content.ContentResolver;
@@ -31,7 +32,6 @@ import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,50 +42,36 @@ TextWatcher, OnItemClickListener{
 	
 	public static final String CITY_EXTRA_KEY = "city";
 	protected ContentResolver mContentResolver;
-	
 	private CityDataHelper dataHelper;
 	private SQLiteDatabase db;
-	
 	private ImageView mBackBtn;
 	private TextView mLocationTV;
 	private EditText mQueryCityET;
-	private LinearLayout showButton;
-//	private Button mButtonSure;
-//	private Button mButtonCanal;
 	private ListView mQueryCityListView;
 	private QueryCityAdapter mSearchCityAdapter;
 	private List<City> mCities;
 	private Filter mFilter;
 	private ImageButton mQueryCityExitBtn;
-	
 	protected LocationUtils mLocationUtils;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.city_query_layout);
-		
+		setContentView(R.layout.city_query_layout);	
 		initData();
 		initView();
-		
 	}
 
 	private void initView(){
 		mBackBtn = (ImageView) findViewById(R.id.back_image);
 		mLocationTV = (TextView) findViewById(R.id.location_text);
 		mQueryCityET = (EditText) findViewById(R.id.queryCityText);
-		showButton = (LinearLayout)findViewById(R.id.showButton);
-//		mButtonCanal = (Button)findViewById(R.id.butn_cancel);
-//		mButtonSure = (Button)findViewById(R.id.butn_sure);
-		
 		mQueryCityExitBtn = (ImageButton) findViewById(R.id.queryCityExit);
 		
 		mBackBtn.setOnClickListener(this);
 		mLocationTV.setOnClickListener(this);
 		mQueryCityET.addTextChangedListener(this);
 		mQueryCityExitBtn.setOnClickListener(this);
-//		mButtonCanal.setOnClickListener(this);
-//		mButtonSure.setOnClickListener(this);
 		
 		mQueryCityListView = (ListView) findViewById(R.id.cityList);
 		mQueryCityListView.setOnItemClickListener(this);
@@ -94,8 +80,7 @@ TextWatcher, OnItemClickListener{
 		mQueryCityListView.setAdapter(mSearchCityAdapter);
 		mQueryCityListView.setTextFilterEnabled(true);
 		mFilter = mSearchCityAdapter.getFilter();
-		
-		
+	
 		String cityName = getCityname();
 		if (TextUtils.isEmpty(cityName)) {
 			startLocation(mCityNameStatus);
@@ -121,15 +106,21 @@ TextWatcher, OnItemClickListener{
 	}
 	
 	private void saveCityname(String cityname){
-		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
+		/*SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
 		Editor mEditor = mPreferences.edit();
 		mEditor.putString(MyApplication.getCityname(), cityname);
-		mEditor.commit();
+		mEditor.commit();*/
+		SettingPreferenceUtils.setPreferString(this, MyApplication.getCityname(), cityname);
+		
+		
+		
 	}
 	
 	public String getCityname() {
-		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
-		String cityname = mPreferences.getString(MyApplication.getCityname(), null);
+//		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
+//		String cityname = mPreferences.getString(MyApplication.getCityname(), null);
+		String cityname = SettingPreferenceUtils.getPreferString(this, MyApplication.getCityname(), null);
+		
 		return cityname;
 	} 
 	
@@ -143,12 +134,6 @@ TextWatcher, OnItemClickListener{
 		case R.id.location_text:
 			startLocation(mCityNameStatus);
 			break;
-//		case R.id.butn_cancel:
-//			doNoShowButton();
-//			break;
-//		case R.id.butn_sure:
-//			doSavaEditCityname();
-//			break;
 		case R.id.queryCityExit:
 			mQueryCityET.setText("");
 			break;
@@ -238,9 +223,7 @@ TextWatcher, OnItemClickListener{
 			}
 
 		}
-		
-		
-		
+
 		//这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换。
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -275,9 +258,6 @@ TextWatcher, OnItemClickListener{
 			return mQueryCityET.getText().length() > 0;
 		}
 		
-//		private void doNoShowButton(){
-//			showButton.setVisibility(View.GONE);
-//		}
 		private void doSavaEditCityname(City city){
 			String cityname = city.getName().toString();
 			saveCityname(cityname);

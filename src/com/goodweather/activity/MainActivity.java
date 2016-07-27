@@ -17,6 +17,7 @@ import com.goodweather.ui.utils.WeatherImg;
 import com.goodweather.utils.HttpUntil;
 import com.goodweather.utils.LocationUtils;
 import com.goodweather.utils.NetUtil;
+import com.goodweather.utils.SettingPreferenceUtils;
 import com.goodweather.utils.SpeechSynthesisUtils;
 import com.goodweather.utils.LocationUtils.LocationListener;
 import com.iflytek.cloud.ErrorCode;
@@ -173,10 +174,11 @@ public class MainActivity extends Activity {
 	}
 
 	private void saveCityname(String cityname) {
-		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
-		Editor mEditor = mPreferences.edit();
-		mEditor.putString(MyApplication.getCityname(), cityname);
-		mEditor.commit();
+//		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
+//		Editor mEditor = mPreferences.edit();
+//		mEditor.putString(MyApplication.getCityname(), cityname);
+//		mEditor.commit();
+		SettingPreferenceUtils.setPreferString(this, MyApplication.getCityname(), cityname);
 	}
 
 	/**
@@ -594,8 +596,9 @@ public class MainActivity extends Activity {
 	 * @return
 	 */
 	private String initCityName() {
-		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
-		String cityname = mPreferences.getString(MyApplication.getCityname(), "北京");
+//		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
+//		String cityname = mPreferences.getString(MyApplication.getCityname(), "北京");
+		String cityname = SettingPreferenceUtils.getPreferString(this, MyApplication.getCityname(), "北京");
 		return cityname;
 	}
 

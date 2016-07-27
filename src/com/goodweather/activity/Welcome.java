@@ -3,6 +3,7 @@ package com.goodweather.activity;
 import java.io.InputStream;
 
 import com.goodweather.db.CityDataHelper;
+import com.goodweather.utils.SettingPreferenceUtils;
 
 import android.app.Activity;
 import android.content.Context;
@@ -77,7 +78,7 @@ public class Welcome extends Activity {
 	//判断是否第一次使用
 	private Boolean isFirstUse() {
 		boolean is = false;
-		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), Context.MODE_PRIVATE);
+		/*SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), Context.MODE_PRIVATE);
 		if (mPreferences.getInt(MyApplication.getOne(), 0) != 1) {
 			Editor mEditor = mPreferences.edit();
 			mEditor.putInt(MyApplication.getOne(), 1);
@@ -87,6 +88,14 @@ public class Welcome extends Activity {
 			is = false;
 		}
 		Log.d(ATG, "is --->" + is);
+		return is;*/
+		
+		if ( SettingPreferenceUtils.getPerferBoolen(this, MyApplication.getOne(), true)) {
+			is = true;
+			SettingPreferenceUtils.setPreferBoolen(this, MyApplication.getOne(), false);
+		} else {
+			is = false;
+		}
 		return is;
 
 	}

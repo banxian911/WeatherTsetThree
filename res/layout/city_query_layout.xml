@@ -133,26 +133,6 @@
             android:text="未找到该城市"
             android:textColor="#ffffffff"
             android:visibility="gone" />
-        <LinearLayout
-            android:id="@+id/showButton"
-            android:orientation="horizontal"
-            android:layout_margin="10dp"
-            android:layout_below="@id/location_text"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone">
-            <Button 
-                android:id="@+id/butn_cancel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="取消"/>
-            <Button android:id="@+id/butn_sure"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="确认"/>
-           </LinearLayout>
 
         <TextView
             android:id="@+id/hotCityText"
