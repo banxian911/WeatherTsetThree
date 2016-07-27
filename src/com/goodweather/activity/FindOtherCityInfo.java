@@ -1,13 +1,20 @@
 package com.goodweather.activity;
 
 
+import java.util.List;
+
+import com.goodweather.adapter.QueryCityAdapter;
+import com.goodweather.db.CityDataHelper;
+import com.goodweather.mod.City;
 import com.goodweather.utils.LocationUtils;
-import com.goodweather.utils.NetUtil;
 import com.goodweather.utils.LocationUtils.LocationListener;
+import com.goodweather.utils.NetUtil;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.SpannableStringBuilder;
@@ -15,28 +22,41 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.style.TextAppearanceSpan;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.widget.Button;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-public class FindOtherCityInfo extends Activity implements OnClickListener,TextWatcher{
+public class FindOtherCityInfo extends Activity implements OnClickListener,
+TextWatcher, OnItemClickListener{
 
 	private String TAG = "UpdateCityName";
+	
+	public static final String CITY_EXTRA_KEY = "city";
+	protected ContentResolver mContentResolver;
+	
+	private CityDataHelper dataHelper;
+	private SQLiteDatabase db;
 	
 	private ImageView mBackBtn;
 	private TextView mLocationTV;
 	private EditText mQueryCityET;
 	private LinearLayout showButton;
-	private Button mButtonSure;
-	private Button mButtonCanal;
+//	private Button mButtonSure;
+//	private Button mButtonCanal;
+	private ListView mQueryCityListView;
+	private QueryCityAdapter mSearchCityAdapter;
+	private List<City> mCities;
+	private Filter mFilter;
+	private ImageButton mQueryCityExitBtn;
 	
 	protected LocationUtils mLocationUtils;
 	@Override
@@ -44,6 +64,8 @@ public class FindOtherCityInfo extends Activity implements OnClickListener,TextW
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.city_query_layout);
+		
+		initData();
 		initView();
 		
 	}
@@ -53,13 +75,26 @@ public class FindOtherCityInfo extends Activity implements OnClickListener,TextW
 		mLocationTV = (TextView) findViewById(R.id.location_text);
 		mQueryCityET = (EditText) findViewById(R.id.queryCityText);
 		showButton = (LinearLayout)findViewById(R.id.showButton);
-		mButtonCanal = (Button)findViewById(R.id.butn_cancel);
-		mButtonSure = (Button)findViewById(R.id.butn_sure);
+//		mButtonCanal = (Button)findViewById(R.id.butn_cancel);
+//		mButtonSure = (Button)findViewById(R.id.butn_sure);
+		
+		mQueryCityExitBtn = (ImageButton) findViewById(R.id.queryCityExit);
+		
 		mBackBtn.setOnClickListener(this);
 		mLocationTV.setOnClickListener(this);
 		mQueryCityET.addTextChangedListener(this);
-		mButtonCanal.setOnClickListener(this);
-		mButtonSure.setOnClickListener(this);
+//		mButtonCanal.setOnClickListener(this);
+//		mButtonSure.setOnClickListener(this);
+		
+		mQueryCityListView = (ListView) findViewById(R.id.cityList);
+		mQueryCityListView.setOnItemClickListener(this);
+		mSearchCityAdapter = new QueryCityAdapter(FindOtherCityInfo.this,
+				mCities);
+		mQueryCityListView.setAdapter(mSearchCityAdapter);
+		mQueryCityListView.setTextFilterEnabled(true);
+		mFilter = mSearchCityAdapter.getFilter();
+		
+		
 		String cityName = getCityname();
 		if (TextUtils.isEmpty(cityName)) {
 			startLocation(mCityNameStatus);
@@ -67,6 +102,23 @@ public class FindOtherCityInfo extends Activity implements OnClickListener,TextW
 			mLocationTV.setText(formatBigMessage(cityName));
 		}
 	}
+	
+	private void initData(){
+		
+//		dataHelper = CityDataHelper.getInstance(this);
+//		db = dataHelper.openDataBase();
+//		String sql="SELECT * FROM city ORDER BY id";
+//        Cursor cursor = db.rawQuery(sql,null);
+//		mContentResolver = getContentResolver();
+//		Cursor cityCursor = mContentResolver.query(
+//				CityDataProvider.CITY_CONTENT_URI, null, null, null, null);
+//		mCities = CityDataHelper.getAllCities(cityCursor);
+		dataHelper = CityDataHelper.getInstance(this);
+		db = dataHelper.openDataBase();
+		mCities = CityDataHelper.getAllCities(db);
+	
+	}
+	
 	private void saveCityname(String cityname){
 		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
 		Editor mEditor = mPreferences.edit();
@@ -90,16 +142,31 @@ public class FindOtherCityInfo extends Activity implements OnClickListener,TextW
 		case R.id.location_text:
 			startLocation(mCityNameStatus);
 			break;
-		case R.id.butn_cancel:
-			doNoShowButton();
-			break;
-		case R.id.butn_sure:
-			doSavaEditCityname();
+//		case R.id.butn_cancel:
+//			doNoShowButton();
+//			break;
+//		case R.id.butn_sure:
+//			doSavaEditCityname();
+//			break;
+		case R.id.queryCityExit:
+			mQueryCityET.setText("");
 			break;
 		default:
 			break;
 		}
 	}
+	
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		switch (parent.getId()) {
+		case R.id.cityList:
+			City city = mSearchCityAdapter.getItem(position);
+			doSavaEditCityname(city);
+			break;
+
+		default:
+			break;
+		}
+	};
 	
 	LocationListener mCityNameStatus = new LocationListener() {
 		
@@ -154,6 +221,25 @@ public class FindOtherCityInfo extends Activity implements OnClickListener,TextW
 			}
 			return spannableStringBuilder;
 		}
+		
+		private void doAfterTextChanged() {
+			if (enoughToFilter()) {
+				if (mFilter != null) {
+					mFilter.filter(mQueryCityET.getText().toString().trim());
+				}
+			} else {
+				if (mQueryCityListView.getVisibility() == View.VISIBLE) {
+					mQueryCityListView.setVisibility(View.GONE);
+				}
+				if (mFilter != null) {
+					mFilter.filter(null);
+				}
+			}
+
+		}
+		
+		
+		
 		//这个方法是在Text改变之前被调用，它的意思就是说在原有的文本s中，从start开始的count个字符将会被一个新的长度为after的文本替换，注意这里是将被替换，还没有被替换。
 		@Override
 		public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -164,7 +250,12 @@ public class FindOtherCityInfo extends Activity implements OnClickListener,TextW
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before, int count) {
 			// TODO Auto-generated method stub
-			isCityname();
+			if (TextUtils.isEmpty(s)) {
+				mQueryCityExitBtn.setVisibility(View.GONE);
+			} else {
+				mQueryCityExitBtn.setVisibility(View.VISIBLE);
+			}
+			doAfterTextChanged();
 		}
 		//这个方法就是在EditText内容已经改变之后调用
 		@Override
@@ -174,19 +265,20 @@ public class FindOtherCityInfo extends Activity implements OnClickListener,TextW
 		}
 		
 		private void doBeforeTextChanged() {
-			if (showButton.getVisibility() == View.GONE) {
-				showButton.setVisibility(View.VISIBLE);
+			if (mQueryCityListView.getVisibility() == View.GONE) {
+				mQueryCityListView.setVisibility(View.VISIBLE);
 			}
 		}
-		private void isCityname(){
-			//判断是否是城市名称
+		
+		public boolean enoughToFilter() {
+			return mQueryCityET.getText().length() > 0;
 		}
 		
-		private void doNoShowButton(){
-			showButton.setVisibility(View.GONE);
-		}
-		private void doSavaEditCityname(){
-			String cityname = mQueryCityET.getText().toString();
+//		private void doNoShowButton(){
+//			showButton.setVisibility(View.GONE);
+//		}
+		private void doSavaEditCityname(City city){
+			String cityname = city.getName().toString();
 			saveCityname(cityname);
 			finish();
 		}

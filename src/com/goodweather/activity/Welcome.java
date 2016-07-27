@@ -1,5 +1,9 @@
 package com.goodweather.activity;
 
+import java.io.InputStream;
+
+import com.goodweather.db.CityDataHelper;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +17,7 @@ import android.view.Window;
 public class Welcome extends Activity {
 
 	private String ATG = "Welcome";
+	private CityDataHelper dataHelper;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +31,11 @@ public class Welcome extends Activity {
 			public void run() { // TODO Auto-generated method stub
 				//根据判断是否第一次使用进入不同页面
 				if (isFirstUse()) {
+					//复制city.db 到指定文件夹
+					dataHelper = CityDataHelper.getInstance(Welcome.this);
+					InputStream in = Welcome.this.getResources().openRawResource(R.raw.city);
+					dataHelper.copyDBFile(in, CityDataHelper.DATABASES_NAME, CityDataHelper.DATABASES_DBPATH);
+					
 					Intent mIntent = new Intent(Welcome.this, GuideLauncherActivity.class);
 					startActivity(mIntent);
 					finish();
