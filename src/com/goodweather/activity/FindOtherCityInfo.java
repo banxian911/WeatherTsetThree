@@ -83,6 +83,7 @@ TextWatcher, OnItemClickListener{
 		mBackBtn.setOnClickListener(this);
 		mLocationTV.setOnClickListener(this);
 		mQueryCityET.addTextChangedListener(this);
+		mQueryCityExitBtn.setOnClickListener(this);
 //		mButtonCanal.setOnClickListener(this);
 //		mButtonSure.setOnClickListener(this);
 		

@@ -93,7 +93,7 @@ public class CityDataHelper {
     /**
      * 关闭数据库
      */
-    public void close(){
+    public static void dbClose(){
     	if (database != null && database.isOpen()) {
 			database.close();
 		}
@@ -124,7 +124,8 @@ public class CityDataHelper {
 					areaCode, postID);
 			list.add(item);
 		}
-		c.close();
+		//c.close();
+		dbClose();
 		return list;
 	}
 }
