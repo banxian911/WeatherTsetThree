@@ -14,7 +14,7 @@ public class MyApplication extends Application {
 
 	private static String SPEECHID = "5718917b";
 	// 数据保存路径
-	private static final String FilePath = "/data/data/com.goodweather.activity/files/WeatherInfo.txt";
+	private static final String FilePath = "/data/data/com.goodweather.activity/files/";
 
 	private static final String FileName = "WeatherInfo.txt";
 

@@ -225,22 +225,23 @@ public class MainActivity extends Activity {
 
 	private void initWeatherdate() {
 		mHeWeatherBean = WeatherInfoData.initHeWeatherData();
-		if (mHeWeatherBean != null) {
+		if (mHeWeatherBean != null && !mHeWeatherBean.getAqi().getCity().getSo2().toString().isEmpty()) {
 			initTitleData();//初始化title
 			initNowData();// 初始化实时天气数据
 			initAqiData();// 初始化Aqi数据
+			initViewData();
 		} else {
 			Toast.makeText(MainActivity.this, "获取数据失败，请稍后重试！", Toast.LENGTH_LONG);
 		}
 
 	}
-
+	
 	private void initViewData() {
-		initTitleViewData();//设置title
-		initNowViewData();// 设置实时天气显示数据
-		initForecastData();// 设置预报列表
-		initAqiViewData();// 设置Aqi数据显示
-		initSuggestionData();//设置指数数据
+			initTitleViewData();//设置title
+			initNowViewData();// 设置实时天气显示数据
+			initForecastData();// 设置预报列表
+			initAqiViewData();// 设置Aqi数据显示
+			initSuggestionData();//设置指数数据	
 	}
 
 	private void initdata() {
@@ -263,7 +264,7 @@ public class MainActivity extends Activity {
 			case MSG_SUCCESS:
 				refresh.setRefreshing(false);
 				initWeatherdate();
-				initViewData();
+				//initViewData();
 				break;
 			case MSG_FAILURE:
 				break;
@@ -279,8 +280,7 @@ public class MainActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			try {
-				String info = HttpUntil.DownloadUrl(initCityName());
-				saveDownloadInfo(info);
+				HttpUntil.DownloadUrl(cityname);
 				mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -602,25 +602,6 @@ public class MainActivity extends Activity {
 //		String cityname = mPreferences.getString(MyApplication.getCityname(), "北京");
 		String cityname = SettingPreferenceUtils.getPreferString(this, MyApplication.getCityname(), "北京");
 		return cityname;
-	}
-
-	/**
-	 * 保存获取的天气数据
-	 * 
-	 * @param weatherinfo
-	 * @throws Exception
-	 */
-	public void saveDownloadInfo(String weatherinfo) throws Exception {
-		if (weatherinfo != null) {
-			String filename = MyApplication.getFilename();
-			FileOutputStream outputStream = null;
-			outputStream = openFileOutput(filename, MODE_PRIVATE);
-			outputStream.write(weatherinfo.getBytes());
-			outputStream.close();
-		} else {
-
-		}
-
 	}
 
 	/**

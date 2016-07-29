@@ -1,23 +1,20 @@
 package com.goodweather.utils;
 
 import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
 import javax.net.ssl.HttpsURLConnection;
-
 import com.goodweather.activity.MyApplication;
-
 import android.util.Log;
-import android.widget.Toast;
 
 public class HttpUntil {
 
 	private static String TAG = "HttpUntil";
 	
-	public static String DownloadUrl(String cityname) throws IOException {
+	public static void DownloadUrl(String cityname) throws Exception {
 		String url = MyApplication.getUrl() + cityname + "&key=" + MyApplication.getHttpurlkey();
 		Log.d(TAG, "url --->" + url);
 		BufferedReader mBufferedReader = null;
@@ -37,7 +34,6 @@ public class HttpUntil {
 			stream = connection.getInputStream();
 		} else {
 			//Toast.makeText(get, "", )
-			return null;
 		}
 		mBufferedReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
 
@@ -47,8 +43,24 @@ public class HttpUntil {
 		}
 		mBufferedReader.close();
 		result = mStringBuffer.toString();
-
-		return result;
+		saveDownloadInfo(MyApplication.getFilepath(),MyApplication.getFilename(),result);	
 	}
+	
+	/**
+	 * 保存获取的天气数据
+	 * 
+	 * @param weatherinfo
+	 * @throws Exception
+	 */
+	public static void saveDownloadInfo(String filePath,String fileName ,String fileContent) throws Exception {
+		if (fileContent != null) {
+			File file = new File(filePath,fileName); 
+			FileOutputStream outputStream = new FileOutputStream(file);
+			outputStream.write(fileContent.getBytes());
+			outputStream.close();
+		} else {
 
+		}
+
+	}
 }
