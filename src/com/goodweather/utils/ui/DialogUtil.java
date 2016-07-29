@@ -1,4 +1,4 @@
-package com.goodweather.ui.utils;
+package com.goodweather.utils.ui;
 
 import android.app.Activity;
 import android.app.Dialog;

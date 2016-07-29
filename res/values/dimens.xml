@@ -4,4 +4,9 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 	<dimen name="abs__action_bar_default_height">48.0dip</dimen>
+	<!--  1280*720 -->
+	<dimen name="time_mask_width">135.0dip</dimen>
+    <dimen name="time_mask_height">140.0dip</dimen>
+    <dimen name="time_interval">0.0dip</dimen>
+    <dimen name="time_marginBottom">35.0dip</dimen>
 </resources>

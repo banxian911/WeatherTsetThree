@@ -12,14 +12,14 @@ import com.goodweather.mod.WeatherInfoData;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.DailyForecastBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.SuggestionBean;
-import com.goodweather.ui.utils.DialogUtil;
-import com.goodweather.ui.utils.WeatherImg;
 import com.goodweather.utils.HttpUntil;
 import com.goodweather.utils.LocationUtils;
 import com.goodweather.utils.NetUtil;
 import com.goodweather.utils.SettingPreferenceUtils;
 import com.goodweather.utils.SpeechSynthesisUtils;
 import com.goodweather.utils.LocationUtils.LocationListener;
+import com.goodweather.utils.ui.DialogUtil;
+import com.goodweather.utils.ui.WeatherImg;
 import com.iflytek.cloud.ErrorCode;
 import com.iflytek.cloud.SpeechSynthesizer;
 
@@ -59,6 +59,8 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	private String TAG = "MainActivity";
+	
+	public static final String UPDATE_WIDGET_WEATHER_ACTION ="com.goodweather.action.update_weather";
 	private static final int MSG_SUCCESS = 0;
 	private static final int MSG_FAILURE = 1;
 
@@ -538,7 +540,7 @@ public class MainActivity extends Activity {
 		String cwTxt = mSuggestionBean.getCw().getTxt().toString();
 		map.put("img", R.drawable.ic_lifeindex_carwash);
 		map.put("title", "洗车指数");
-		map.put("desc", comfBrf);
+		map.put("desc", cwBrf);
 		map.put("detail", cwTxt);
 		list.add(map);
 
@@ -692,4 +694,8 @@ public class MainActivity extends Activity {
 		builder.show();
 	}
 
+	private void updateWidgetWeather() {
+		sendBroadcast(new Intent(UPDATE_WIDGET_WEATHER_ACTION));
+	}
+	
 }

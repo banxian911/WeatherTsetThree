@@ -36,6 +36,38 @@
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen" >
         </activity>
+        
+        <receiver
+            android:name="com.goodweather.widget.WeatherWidget"
+            android:label="@string/biz_widget_4_2" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="com.goodweather.widget.WeatherWidget.TEXTINFO_LEFT_HOTAREA_ACTION" />
+                <action android:name="com.goodweather.widget.WeatherWidget.WEATHERICON_HOTAREA_ACTION" />
+                <action android:name="com.goodweather.widget.WeatherWidget.TEXTINFO_RIGHT_HOTAREA_ACTION" />
+                <action android:name="com.goodweather.widget.WeatherWidget.TIME_LEFT_HOTAREA_ACTION" />
+                <action android:name="com.goodweather.widget.WeatherWidget.TIME_RIGHT_HOTAREA_ACTION" />
+                <!--
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                -->
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/weather_widget_4x2" />
+        </receiver>
+        
+        <service
+            android:name="com.goodweather.servers.WeatherWidgetServer"
+            android:process=".WeatherWidget"
+            >
+            
+        </service>
+           
 
         <service
             android:name="com.baidu.location.f"
