@@ -8,36 +8,31 @@ import java.util.HashMap;
 
 import com.goodweather.adapter.WeatherForecastListAdapter;
 import com.goodweather.adapter.WeatherSuggestionListAdapter;
-import com.goodweather.mod.WeatherInfoData;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.DailyForecastBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.SuggestionBean;
+import com.goodweather.mod.WeatherInfoData;
 import com.goodweather.utils.HttpUntil;
 import com.goodweather.utils.LocationUtils;
+import com.goodweather.utils.LocationUtils.LocationListener;
 import com.goodweather.utils.NetUtil;
+import com.goodweather.utils.ReadWeatherTXTInfo;
 import com.goodweather.utils.SettingPreferenceUtils;
 import com.goodweather.utils.SpeechSynthesisUtils;
-import com.goodweather.utils.LocationUtils.LocationListener;
 import com.goodweather.utils.ui.DialogUtil;
 import com.goodweather.utils.ui.WeatherImg;
 import com.iflytek.cloud.ErrorCode;
-import com.iflytek.cloud.SpeechSynthesizer;
 
 import android.app.Activity;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
@@ -50,7 +45,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -245,13 +239,18 @@ public class MainActivity extends Activity {
 	}
 
 	private void initdata() {
-		if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
-			Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
-			// return;
+		if (ReadWeatherTXTInfo.isFileExist()) {
+			initWeatherdate();
 		} else {
-			mThread = new Thread(mRunnable);
-			mThread.start();
+			if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
+				Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
+				// return;
+			} else {
+				mThread = new Thread(mRunnable);
+				mThread.start();
+			}
 		}
+		
 	}
 
 	private Handler mHandler = new Handler() {
