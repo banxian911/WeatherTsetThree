@@ -70,7 +70,7 @@ public class WeatherWidgetServer extends Service{
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
-		initWeatherInfo();
+		//initWeatherInfo();
 		remoteViews = new RemoteViews(getApplication().getPackageName(),
 				R.layout.widget_4x2);
 		PendingIntent WeatherIconHotAreaPI = PendingIntent.getActivity(this, 0,
@@ -122,6 +122,7 @@ public class WeatherWidgetServer extends Service{
 	
 	private void updateWeather() {
 		// TODO Auto-generated method stub
+		initWeatherInfo();
 		remoteViews.setTextViewText(R.id.weather_icon_left, cityname + "\r\n"
 		+ currentTemperature + " " + currentWeather);
 		remoteViews.setViewVisibility(R.id.TextViewMessage, View.GONE);

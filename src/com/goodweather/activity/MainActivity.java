@@ -265,6 +265,7 @@ public class MainActivity extends Activity {
 			case MSG_SUCCESS:
 				refresh.setRefreshing(false);
 				initWeatherdate();
+				updateWidgetWeather();
 				// initViewData();
 				break;
 			case MSG_FAILURE:
