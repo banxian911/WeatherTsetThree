@@ -6,6 +6,8 @@ import java.util.Date;
 
 import com.goodweather.activity.MainActivity;
 import com.goodweather.activity.R;
+import com.goodweather.mod.WeatherInfo.HeWeatherBean;
+import com.goodweather.mod.WeatherInfoData;
 import com.goodweather.utils.time.Lunar;
 import com.goodweather.utils.time.TimeUtil;
 import com.goodweather.widget.WeatherWidget;
@@ -29,6 +31,10 @@ public class WeatherWidgetServer extends Service{
 	private static final int TIME_FORMAT_24 = 0;
 	private static final int TIME_FORMAT_AM = 1;
 	private static final int TIME_FORMAT_PM = 2;
+	
+	private String cityname;
+	private String currentTemperature;
+	private String currentWeather;
 	
 	private RemoteViews remoteViews;
 	private int[] timesImg = { R.drawable.nw0, R.drawable.nw1, R.drawable.nw2,
@@ -64,6 +70,7 @@ public class WeatherWidgetServer extends Service{
 	public void onCreate() {
 		// TODO Auto-generated method stub
 		super.onCreate();
+		initWeatherInfo();
 		remoteViews = new RemoteViews(getApplication().getPackageName(),
 				R.layout.widget_4x2);
 		PendingIntent WeatherIconHotAreaPI = PendingIntent.getActivity(this, 0,
@@ -89,7 +96,7 @@ public class WeatherWidgetServer extends Service{
 			}
 		}
 		updateTime();
-		
+		updateWeather();
 		return super.onStartCommand(intent, flags, startId);
 	}
 	
@@ -115,7 +122,22 @@ public class WeatherWidgetServer extends Service{
 	
 	private void updateWeather() {
 		// TODO Auto-generated method stub
-		
+		remoteViews.setTextViewText(R.id.weather_icon_left, cityname + "\r\n"
+		+ currentTemperature + " " + currentWeather);
+		remoteViews.setViewVisibility(R.id.TextViewMessage, View.GONE);
+		ComponentName componentName = new ComponentName(getApplication(),WeatherWidget.class);
+		AppWidgetManager.getInstance(getApplication()).updateAppWidget(componentName, remoteViews);
+	}
+	
+	private void initWeatherInfo(){
+		HeWeatherBean mHeWeatherBean = WeatherInfoData.initHeWeatherData();
+		cityname = mHeWeatherBean.getBasic().getCity().toString();
+		if (mHeWeatherBean != null && !cityname.isEmpty()) {
+			currentTemperature = mHeWeatherBean.getNow().getTmp().toString() + "°";
+			currentWeather = mHeWeatherBean.getNow().getCond().getTxt().toString();
+		} else {
+
+		}
 	}
 	
 	private void updateTime() {

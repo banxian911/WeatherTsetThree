@@ -43,6 +43,7 @@ public class HttpUntil {
 		}
 		mBufferedReader.close();
 		result = mStringBuffer.toString();
+		Log.d(TAG, "result --->" + result);
 		saveDownloadInfo(MyApplication.getFilepath(),MyApplication.getFilename(),result);	
 	}
 	

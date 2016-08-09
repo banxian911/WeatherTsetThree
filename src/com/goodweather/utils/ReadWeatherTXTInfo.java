@@ -8,19 +8,32 @@ import java.io.InputStreamReader;
 
 import com.goodweather.activity.MyApplication;
 
+import android.util.Log;
 import android.widget.Toast;
 
 public class ReadWeatherTXTInfo {
+	
+	private static final String TAG = "ReadWeatherTXTInfo";
 
 	public ReadWeatherTXTInfo() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public static Boolean isFileExist(){
-		File mFile = new File(MyApplication.getFilepath());
+	public static Boolean isFileExist(String filePath){
+		File mFile = new File(filePath);
 		if (!mFile.exists()) {
 			return false;
 		} else {
+			return true;
+		}
+	}
+	
+	public static Boolean isDeleteFolder(String filePath){
+		File mFile = new File(filePath);
+		if (isFileExist(filePath)) {
+			return mFile.delete();
+		} else {
+			Log.d(TAG, "文件不存在---！");
 			return true;
 		}
 	}
@@ -30,10 +43,10 @@ public class ReadWeatherTXTInfo {
 		String result = null;
 		String strRead = null;
 		StringBuffer mStringBuffer = new StringBuffer();
+		String filePath = MyApplication.getWeatherinfotxt();
 		
-		
-		if (isFileExist()) {
-			File file = new File(MyApplication.getFilepath());
+		if (isFileExist(filePath)) {
+			File file = new File(filePath);
 			FileInputStream inputStream = new FileInputStream(file);
 			mBufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 			while ((strRead = mBufferedReader.readLine()) != null ) {

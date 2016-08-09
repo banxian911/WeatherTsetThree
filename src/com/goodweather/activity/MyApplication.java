@@ -6,8 +6,6 @@ import android.app.Application;
 
 public class MyApplication extends Application {
 
-	private static final String WEATHERINFO = "WeatherInfo";// shareadPerference
-															// 全局key
 	private static final String ONE = "First";// 判断软件是否第一次使用的key
 	private static final String CITYNAME = "CityName";// 获取城市名称
 	private static final String LOCATIONCITYNAME = "LocationCityName";
@@ -17,6 +15,8 @@ public class MyApplication extends Application {
 	private static final String FilePath = "/data/data/com.goodweather.activity/files/";
 
 	private static final String FileName = "WeatherInfo.txt";
+	
+	private static final String WeatherInfoTXT = FilePath + FileName;
 
 	// 和风数据个人认证key
 	private static final String httpUrlKey = "0ac6804b137f4f2db569511432afb4fb";
@@ -55,10 +55,6 @@ public class MyApplication extends Application {
 		return httpUrlKey;
 	}
 
-	public static String getWeatherinfo() {
-		return WEATHERINFO;
-	}
-
 	public static String getOne() {
 		return ONE;
 	}
@@ -77,6 +73,10 @@ public class MyApplication extends Application {
 
 	public static String getLocationcityname() {
 		return LOCATIONCITYNAME;
+	}
+
+	public static String getWeatherinfotxt() {
+		return WeatherInfoTXT;
 	}
 
 }

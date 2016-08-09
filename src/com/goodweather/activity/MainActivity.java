@@ -219,13 +219,13 @@ public class MainActivity extends Activity {
 
 	private void initWeatherdate() {
 		mHeWeatherBean = WeatherInfoData.initHeWeatherData();
-		if (mHeWeatherBean != null && !mHeWeatherBean.getAqi().getCity().getSo2().toString().isEmpty()) {
+		if (mHeWeatherBean != null) {
 			initTitleData();//初始化title
 			initNowData();// 初始化实时天气数据
 			initAqiData();// 初始化Aqi数据
 			initViewData();
 		} else {
-			Toast.makeText(MainActivity.this, "获取数据失败，请稍后重试！", Toast.LENGTH_LONG);
+			Toast.makeText(MainActivity.this, "获取数据失败，请稍后重试！", Toast.LENGTH_LONG).show();
 		}
 
 	}
@@ -239,7 +239,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void initdata() {
-		if (ReadWeatherTXTInfo.isFileExist()) {
+		if (ReadWeatherTXTInfo.isFileExist(MyApplication.getWeatherinfotxt())) {
 			initWeatherdate();
 		} else {
 			if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
@@ -377,7 +377,13 @@ public class MainActivity extends Activity {
 			@Override
 			public void onRefresh() {
 				// TODO Auto-generated method stub
-				initdata();
+				if (ReadWeatherTXTInfo.isDeleteFolder(MyApplication.getWeatherinfotxt())) {
+					initdata();
+				} else {
+					refresh.setRefreshing(false);
+					Toast.makeText(MainActivity.this, "刷新失败，请重新尝试！", Toast.LENGTH_SHORT).show();
+				}
+				
 			}
 		});
 	}

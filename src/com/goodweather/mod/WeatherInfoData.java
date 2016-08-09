@@ -8,6 +8,8 @@ import com.goodweather.utils.ReadWeatherTXTInfo;
 import android.util.Log;
 
 public class WeatherInfoData {
+	
+	private static String TAG = "WeatherInfoData";
 
 	/**
 	 * 数据
@@ -23,7 +25,8 @@ public class WeatherInfoData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (info != null) {
+		Log.d(TAG, "info.length---->" + info.length());
+		if (info != null && info.length()>99) {
 			WeatherInfo mInfo = WeatherInfo.objectFromData(info);
 			for (int i = 0; i < mInfo.getHeWeather().size(); i++) {
 				mBean = mInfo.getHeWeather().get(i);
@@ -36,7 +39,7 @@ public class WeatherInfoData {
 		//TextView myTextView = (TextView) findViewById(R.id.text1);
 		//myTextView.setText(mBean.getAqi().getCity().getAqi().toString());
 
-		Log.d("yunlong--->", "mCityBasicInfo --->" + mBean);
+		Log.d(TAG, "mCityBasicInfo --->" + mBean);
 		return mBean;
 	}
 }
