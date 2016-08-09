@@ -9,6 +9,7 @@ import com.goodweather.mod.City;
 import com.goodweather.utils.LocationUtils;
 import com.goodweather.utils.LocationUtils.LocationListener;
 import com.goodweather.utils.NetUtil;
+import com.goodweather.utils.ReadWeatherTXTInfo;
 import com.goodweather.utils.SettingPreferenceUtils;
 
 import android.app.Activity;
@@ -261,6 +262,9 @@ TextWatcher, OnItemClickListener{
 		private void doSavaEditCityname(City city){
 			String cityname = city.getName().toString();
 			saveCityname(cityname);
-			finish();
+			if (ReadWeatherTXTInfo.isDeleteFolder(MyApplication.getWeatherinfotxt())){
+				finish();
+			}
+			
 		}
 }

@@ -53,8 +53,8 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	private String TAG = "MainActivity";
-	
-	public static final String UPDATE_WIDGET_WEATHER_ACTION ="com.goodweather.action.update_weather";
+
+	public static final String UPDATE_WIDGET_WEATHER_ACTION = "com.goodweather.action.update_weather";
 	private static final int MSG_SUCCESS = 0;
 	private static final int MSG_FAILURE = 1;
 
@@ -100,7 +100,7 @@ public class MainActivity extends Activity {
 	private ImageView share;
 	private ImageView about;
 	private ImageView location;
-	
+
 	private SwipeRefreshLayout refresh;
 
 	private TextView updateTimeText;
@@ -147,6 +147,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void failed() {
 			// TODO Auto-generated method stub
+			mdialog.dismiss();
 			Toast.makeText(MainActivity.this, R.string.getlocation_fail, Toast.LENGTH_LONG).show();
 		}
 
@@ -170,10 +171,11 @@ public class MainActivity extends Activity {
 	}
 
 	private void saveCityname(String cityname) {
-//		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
-//		Editor mEditor = mPreferences.edit();
-//		mEditor.putString(MyApplication.getCityname(), cityname);
-//		mEditor.commit();
+		// SharedPreferences mPreferences =
+		// getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
+		// Editor mEditor = mPreferences.edit();
+		// mEditor.putString(MyApplication.getCityname(), cityname);
+		// mEditor.commit();
 		SettingPreferenceUtils.setPreferString(this, MyApplication.getCityname(), cityname);
 	}
 
@@ -194,7 +196,11 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
-		initdata();
+		if (ReadWeatherTXTInfo.isFileExist(MyApplication.getWeatherinfotxt())) {
+			initWeatherdate();
+		} else {
+			initdata();
+		}
 	}
 
 	@Override
@@ -209,18 +215,18 @@ public class MainActivity extends Activity {
 		mainView = (LinearLayout) findViewById(R.id.weather_bg);
 		scrollView = (ScrollView) findViewById(R.id.scroll_view);
 		scrollView.smoothScrollTo(0, 10);
-		initTitleView();//初始化Title
-		initRefershView();//初始化下拉刷新
+		initTitleView();// 初始化Title
+		initRefershView();// 初始化下拉刷新
 		initNowView();// 初始化实时天气
 		initForecastView();// 初始化预报信息
 		initAqiView();// 初始化Aqi信息
-		initSuggestionView();//初始化指数信息
+		initSuggestionView();// 初始化指数信息
 	}
 
 	private void initWeatherdate() {
 		mHeWeatherBean = WeatherInfoData.initHeWeatherData();
 		if (mHeWeatherBean != null) {
-			initTitleData();//初始化title
+			initTitleData();// 初始化title
 			initNowData();// 初始化实时天气数据
 			initAqiData();// 初始化Aqi数据
 			initViewData();
@@ -229,28 +235,24 @@ public class MainActivity extends Activity {
 		}
 
 	}
-	
+
 	private void initViewData() {
-			initTitleViewData();//设置title
-			initNowViewData();// 设置实时天气显示数据
-			initForecastData();// 设置预报列表
-			initAqiViewData();// 设置Aqi数据显示
-			initSuggestionData();//设置指数数据	
+		initTitleViewData();// 设置title
+		initNowViewData();// 设置实时天气显示数据
+		initForecastData();// 设置预报列表
+		initAqiViewData();// 设置Aqi数据显示
+		initSuggestionData();// 设置指数数据
 	}
 
 	private void initdata() {
-		if (ReadWeatherTXTInfo.isFileExist(MyApplication.getWeatherinfotxt())) {
-			initWeatherdate();
+
+		if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
+			Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
+			// return;
 		} else {
-			if (NetUtil.getNetworkState(this) == NetUtil.NETWORN_NONE) {
-				Toast.makeText(this, R.string.net_error, Toast.LENGTH_SHORT).show();
-				// return;
-			} else {
-				mThread = new Thread(mRunnable);
-				mThread.start();
-			}
+			mThread = new Thread(mRunnable);
+			mThread.start();
 		}
-		
 	}
 
 	private Handler mHandler = new Handler() {
@@ -263,9 +265,10 @@ public class MainActivity extends Activity {
 			case MSG_SUCCESS:
 				refresh.setRefreshing(false);
 				initWeatherdate();
-				//initViewData();
+				// initViewData();
 				break;
 			case MSG_FAILURE:
+				
 				break;
 
 			default:
@@ -283,6 +286,7 @@ public class MainActivity extends Activity {
 				mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
 			} catch (Exception e) {
 				// TODO: handle exception
+			//	mHandler.obtainMessage(MSG_FAILURE).sendToTarget();
 			}
 		}
 	};
@@ -306,30 +310,31 @@ public class MainActivity extends Activity {
 	/**
 	 * 初始化title
 	 */
-	private void initTitleView(){
+	private void initTitleView() {
 		changeCity = (LinearLayout) findViewById(R.id.change_city_layout);
 		cityText = (TextView) findViewById(R.id.city);
 		share = (ImageView) findViewById(R.id.share);
 		about = (ImageView) findViewById(R.id.about);
 		location = (ImageView) findViewById(R.id.location);
 		updateTimeText = (TextView) findViewById(R.id.update_time);
-		
+
 		changeCity.setOnClickListener(new ButtonListener());
 		share.setOnClickListener(new ButtonListener());
 		about.setOnClickListener(new ButtonListener());
-		//refresh.setOnClickListener(new ButtonListener());
+		// refresh.setOnClickListener(new ButtonListener());
 		location.setOnClickListener(new ButtonListener());
 	}
-	private void initTitleData(){
+
+	private void initTitleData() {
 		cityname = mHeWeatherBean.getBasic().getCity().toString();
 		updateTime = mHeWeatherBean.getBasic().getUpdate().getLoc().toString();
 	}
-	private void initTitleViewData(){
+
+	private void initTitleViewData() {
 		cityText.setText(cityname);
 		updateTimeText.setText(updateTime);
 	}
-	
-	
+
 	class ButtonListener implements OnClickListener {
 
 		@Override
@@ -347,11 +352,10 @@ public class MainActivity extends Activity {
 			case R.id.about:// 关于本软的开发信息
 				AboutInfo();
 				break;
-			/*case R.id.refresh:// 更新按钮
-				dialogShow(2);
-				initdata();
-				mdialog.dismiss();
-				break;*/
+			/*
+			 * case R.id.refresh:// 更新按钮 dialogShow(2); initdata();
+			 * mdialog.dismiss(); break;
+			 */
 			case R.id.location:
 				dialogShow(1);
 				startLocation(mCityNameStatus);
@@ -365,15 +369,15 @@ public class MainActivity extends Activity {
 		}
 
 	}
-	
+
 	/**
 	 * 下拉刷新
 	 */
-	private void initRefershView(){
-		refresh = (SwipeRefreshLayout)findViewById(R.id.swip_refresh);
+	private void initRefershView() {
+		refresh = (SwipeRefreshLayout) findViewById(R.id.swip_refresh);
 		refresh.setSize(SwipeRefreshLayout.DEFAULT);
 		refresh.setOnRefreshListener(new OnRefreshListener() {
-			
+
 			@Override
 			public void onRefresh() {
 				// TODO Auto-generated method stub
@@ -383,37 +387,36 @@ public class MainActivity extends Activity {
 					refresh.setRefreshing(false);
 					Toast.makeText(MainActivity.this, "刷新失败，请重新尝试！", Toast.LENGTH_SHORT).show();
 				}
-				
+
 			}
 		});
 	}
-	
-	
+
 	/**
 	 * 语音合成
 	 */
-	private void speechPlay(){
-		String infoOne ="现在开始为您播报:"+cityText.getText().toString();
-		String infoTwo = "，今天天气:"+currentWeatherText.getText().toString();
-		String infoThree = ",温度:"+currentTemperature+"摄氏度";
-		String infoFour = ",体感温度:"+peopletemperature+"摄氏度";
-		String infoFive = ",风力情况："+windText.getText().toString();
-		String infoSix = ",湿度:百分之"+hum; 
-		String weatherInfo = infoOne+infoTwo+infoThree+infoFour+infoFive+infoSix;
+	private void speechPlay() {
+		String infoOne = "现在开始为您播报:" + cityText.getText().toString();
+		String infoTwo = "，今天天气:" + currentWeatherText.getText().toString();
+		String infoThree = ",温度:" + currentTemperature + "摄氏度";
+		String infoFour = ",体感温度:" + peopletemperature + "摄氏度";
+		String infoFive = ",风力情况：" + windText.getText().toString();
+		String infoSix = ",湿度:百分之" + hum;
+		String weatherInfo = infoOne + infoTwo + infoThree + infoFour + infoFive + infoSix;
 		SpeechSynthesisUtils.setParam(MainActivity.this);
 		int code = SpeechSynthesisUtils.mTts.startSpeaking(weatherInfo, SpeechSynthesisUtils.mTtsListener);
 		if (code != ErrorCode.SUCCESS) {
-			if(code == ErrorCode.ERROR_COMPONENT_NOT_INSTALLED){
-				//未安装则跳转到提示安装页面
-				//mInstaller.install();
+			if (code == ErrorCode.ERROR_COMPONENT_NOT_INSTALLED) {
+				// 未安装则跳转到提示安装页面
+				// mInstaller.install();
 				dialogShow(1);
-			}else {
-			//	showTip("语音合成失败,错误码: " + code);	
+			} else {
+				// showTip("语音合成失败,错误码: " + code);
 				dialogShow(2);
 			}
 		}
 	}
-	
+
 	/**
 	 * 初始化实时天气信息
 	 */
@@ -423,7 +426,7 @@ public class MainActivity extends Activity {
 		peopletemperatureText = (TextView) findViewById(R.id.people_temperature);
 		windText = (TextView) findViewById(R.id.wind);
 		humText = (TextView) findViewById(R.id.humidity);
-		speech = (ImageView)findViewById(R.id.speechviem);
+		speech = (ImageView) findViewById(R.id.speechviem);
 		speech.setOnClickListener(new ButtonListener());
 	}
 
@@ -481,7 +484,6 @@ public class MainActivity extends Activity {
 		return list;
 	}
 
-	
 	/**
 	 * 初始化aqi信息
 	 */
@@ -514,17 +516,19 @@ public class MainActivity extends Activity {
 		Pm10.setText(pm10);
 		So2.setText(so2);
 	}
-	
+
 	/**
 	 * 初始化指数信息
 	 */
-	private void initSuggestionView(){
+	private void initSuggestionView() {
 		weatherSuggestionList = (ListView) findViewById(R.id.weather_suggestion_list);
 		weatherSuggestionList.setFocusable(false);
 	}
-	private void initSuggestionData(){
+
+	private void initSuggestionData() {
 		weatherSuggestionList.setAdapter(new WeatherSuggestionListAdapter(this));
 	}
+
 	/**
 	 * 指数信息
 	 */
@@ -596,15 +600,16 @@ public class MainActivity extends Activity {
 		return list;
 	}
 
-
 	/**
 	 * 初始化cityname
 	 * 
 	 * @return
 	 */
 	private String initCityName() {
-//		SharedPreferences mPreferences = getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
-//		String cityname = mPreferences.getString(MyApplication.getCityname(), "北京");
+		// SharedPreferences mPreferences =
+		// getSharedPreferences(MyApplication.getWeatherinfo(), MODE_PRIVATE);
+		// String cityname = mPreferences.getString(MyApplication.getCityname(),
+		// "北京");
 		String cityname = SettingPreferenceUtils.getPreferString(this, MyApplication.getCityname(), "北京");
 		return cityname;
 	}
@@ -613,10 +618,11 @@ public class MainActivity extends Activity {
 	 * 截图分享设置
 	 */
 	private void share() {
-		//启动异步操作
+		// 启动异步操作
 		new AsyncTask<Void, Void, File>() {
 			Dialog mdialog;
-			//这里是最终用户调用Excute时的接口，当任务执行之前开始调用此方法，可以在这里显示进度对话框。
+
+			// 这里是最终用户调用Excute时的接口，当任务执行之前开始调用此方法，可以在这里显示进度对话框。
 			protected void onPreExecute() {
 				super.onPreExecute();
 				mdialog = DialogUtil.getCustomeDialog(MainActivity.this, R.style.load_dialog,
@@ -641,7 +647,9 @@ public class MainActivity extends Activity {
 				}
 				return null;
 			}
-			//相当于Handler 处理UI的方式，在这里面可以使用在doInBackground 得到的结果处理操作UI。 此方法在主线程执行，任务执行的结果作为此方法的参数返回
+
+			// 相当于Handler 处理UI的方式，在这里面可以使用在doInBackground 得到的结果处理操作UI。
+			// 此方法在主线程执行，任务执行的结果作为此方法的参数返回
 			protected void onPostExecute(File result) {
 				super.onPostExecute(result);
 				mdialog.dismiss();
@@ -661,7 +669,7 @@ public class MainActivity extends Activity {
 
 		}.execute();
 	}
-	
+
 	/**
 	 * 关于
 	 */
@@ -683,5 +691,5 @@ public class MainActivity extends Activity {
 	private void updateWidgetWeather() {
 		sendBroadcast(new Intent(UPDATE_WIDGET_WEATHER_ACTION));
 	}
-	
+
 }
