@@ -279,7 +279,7 @@ public class MainActivity extends Activity {
 		public void run() {
 			// TODO Auto-generated method stub
 			try {
-				HttpUntil.DownloadUrl(cityname);
+				HttpUntil.DownloadUrl(initCityName());
 				mHandler.obtainMessage(MSG_SUCCESS).sendToTarget();
 			} catch (Exception e) {
 				// TODO: handle exception
