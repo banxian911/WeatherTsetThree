@@ -8,6 +8,7 @@ import java.util.HashMap;
 
 import com.goodweather.adapter.WeatherForecastListAdapter;
 import com.goodweather.adapter.WeatherSuggestionListAdapter;
+import com.goodweather.debug.LogDebug;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.DailyForecastBean;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean.SuggestionBean;
@@ -35,7 +36,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -52,7 +52,9 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	private String TAG = "MainActivity";
+	//private String TAG = "MainActivity";
+	private LogDebug.Tag TAG = new LogDebug.Tag("MainActivity");
+
 
 	public static final String UPDATE_WIDGET_WEATHER_ACTION = "com.goodweather.action.update_weather";
 	private static final int MSG_SUCCESS = 0;
@@ -137,7 +139,7 @@ public class MainActivity extends Activity {
 		@Override
 		public void succeed(String city) {
 			// TODO Auto-generated method stub
-			Log.d(TAG, "city--->" + city);
+			LogDebug.d(TAG, "city--->" + city);
 			saveCityname(city);
 			initdata();
 			mdialog.dismiss();
@@ -196,6 +198,7 @@ public class MainActivity extends Activity {
 	protected void onStart() {
 		// TODO Auto-generated method stub
 		super.onStart();
+		LogDebug.d(TAG, "onStart--->");
 		if (ReadWeatherTXTInfo.isFileExist(MyApplication.getWeatherinfotxt())) {
 			initWeatherdate();
 		} else {
