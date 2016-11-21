@@ -1,6 +1,5 @@
 package com.goodweather.debug;
 
-import android.os.Build;
 import android.util.Log;
 
 public class LogDebug {
@@ -20,7 +19,7 @@ public class LogDebug {
 		public Tag(String tag){
 			final int lenDiff = tag.length() - MAX_TAG_LEN;
 			if (lenDiff > 0) {
-				
+				w(TAG, "Tag " + tag + " is " + lenDiff + " chars longer than limit.");
 			}
 			mValue = LOGTAG_PREFIX + (lenDiff > 0 ? tag.substring(0,MAX_TAG_LEN) : tag);
 		}
@@ -61,33 +60,5 @@ public class LogDebug {
         if (isDebug)  
         	Log.w(tag.toString(), msg);  
     }  
-  
-	
-	/*public static void suppressLogsForTesting(boolean suppress){
-		sSuppressForTesting = suppress;
-	}
-	
-	private static boolean isLoggable(Tag tag,int level){
-		if (sSuppressForTesting) {
-			return false;
-		}
-		try {
-			if (LogHelper.instance().getOverrideLevel() != 0) {
-				return LogHelper.instance().getOverrideLevel() <= level;
-			} else {
-				return false;
-			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			//e(TAG,"tag too long:" + tag);
-			return false;
-		}
-		//return sSuppressForTesting;
-	}
-	
-	private static boolean shouldLog(Tag tag,int level){
-		return android.util.Log.isLoggable(LOGTAG_PREFIX, level) || android.util.Log.isLoggable(tag.toString(), level);
-	}
-	*/
 	
 }

@@ -53,7 +53,7 @@ import android.widget.Toast;
 public class MainActivity extends Activity {
 
 	//private String TAG = "MainActivity";
-	private LogDebug.Tag TAG = new LogDebug.Tag("MainActivity");
+	private static final LogDebug.Tag TAG = new LogDebug.Tag("MainActivity");
 
 
 	public static final String UPDATE_WIDGET_WEATHER_ACTION = "com.goodweather.action.update_weather";

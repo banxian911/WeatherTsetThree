@@ -2,14 +2,14 @@ package com.goodweather.mod;
 
 import java.io.IOException;
 
+import com.goodweather.debug.LogDebug;
 import com.goodweather.mod.WeatherInfo.HeWeatherBean;
 import com.goodweather.utils.ReadWeatherTXTInfo;
 
-import android.util.Log;
-
 public class WeatherInfoData {
 	
-	private static String TAG = "WeatherInfoData";
+	//private static String TAG = "WeatherInfoData";
+	private static final LogDebug.Tag TAG = new LogDebug.Tag("WeatherInfoData");
 
 	/**
 	 * 数据
@@ -25,7 +25,7 @@ public class WeatherInfoData {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Log.d(TAG, "info.length---->" + info.length());
+		LogDebug.d(TAG, "info.length---->" + info.length());
 		if (info != null && info.length()>99) {
 			WeatherInfo mInfo = WeatherInfo.objectFromData(info);
 			for (int i = 0; i < mInfo.getHeWeather().size(); i++) {
@@ -39,7 +39,7 @@ public class WeatherInfoData {
 		//TextView myTextView = (TextView) findViewById(R.id.text1);
 		//myTextView.setText(mBean.getAqi().getCity().getAqi().toString());
 
-		Log.d(TAG, "mCityBasicInfo --->" + mBean);
+		LogDebug.d(TAG, "mCityBasicInfo --->" + mBean);
 		return mBean;
 	}
 }

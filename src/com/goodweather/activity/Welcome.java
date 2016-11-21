@@ -3,6 +3,7 @@ package com.goodweather.activity;
 import java.io.InputStream;
 
 import com.goodweather.db.CityDataHelper;
+import com.goodweather.debug.LogDebug;
 import com.goodweather.utils.SettingPreferenceUtils;
 
 import android.app.Activity;
@@ -17,7 +18,8 @@ import android.view.Window;
 
 public class Welcome extends Activity {
 
-	private String ATG = "Welcome";
+	//private String ATG = "Welcome";
+	private static final LogDebug.Tag TAG = new LogDebug.Tag("Welcome");
 	private CityDataHelper dataHelper;
 
 	@Override
